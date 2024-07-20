@@ -9,6 +9,7 @@ export const uniforms = {
     uPositionFrequency: new THREE.Uniform(0.5),
     uTimeFrequency: new THREE.Uniform(0.4),
     uStrength: new THREE.Uniform(0.3),
+    uCursorDistance: new THREE.Uniform(1.0),
 
     uWarpPositionFrequency: new THREE.Uniform(0.38),
     uWarpTimeFrequency: new THREE.Uniform(0.12),

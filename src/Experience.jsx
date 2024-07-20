@@ -1,20 +1,27 @@
 import { useThree, extend, useFrame } from "@react-three/fiber";
-import * as THREE from 'three'
+import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import CustomPhysicalMaterial, { uniforms } from "./custom/materials/CustomPhysicalMaterial";
+import CustomPhysicalMaterial, {
+  uniforms,
+} from "./custom/materials/CustomPhysicalMaterial";
 import { useControls } from "leva";
 import { useEffect, useMemo, useRef } from "react";
-import vertexShader from './shaders/wobble/vertex.glsl';
+import vertexShader from "./shaders/wobble/vertex.glsl";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { createControlConfig } from "./utils/objectUtils";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
+import gsap from "gsap";
+import useMouse from "./hooks/useMouse";
+import useCanvas from "./hooks/useCanvas";
 
 extend({ OrbitControls, CustomPhysicalMaterial });
 
 export default function Experience() {
   const material = useRef();
   const wobble = useRef();
-  
+  const isAnimating = useRef(false);
+  const { getCursorDistance, screenCursor } = useMouse();
+  const canvas = useCanvas();
   const controlsMaterial = useControls("Material", {
     metalness: {
       value: 0,
@@ -47,61 +54,97 @@ export default function Experience() {
       step: 0.001,
     },
   });
-  const controlsUniform = useControls("Uniform", createControlConfig(uniforms));
+  const controlsUniform = useControls(
+    "Uniform",
+    createControlConfig(uniforms, ["uCursorDistance"])
+  );
 
   const mergedGeometry = useMemo(() => {
     const geometry = mergeVertices(new THREE.IcosahedronGeometry(2.5, 50));
     geometry.computeTangents(); // Needed for shader
-    console.log(geometry.attributes)
-    return geometry
+    return geometry;
   }, []);
 
   const depthMaterial = useMemo(() => {
     return new CustomShaderMaterial({
-        baseMaterial: THREE.MeshDepthMaterial,
-        vertexShader,
-        silent: true,
-        uniforms,
+      baseMaterial: THREE.MeshDepthMaterial,
+      vertexShader,
+      silent: true,
+      uniforms,
 
-        depthPacking: THREE.RGBADepthPacking,
-    })
-  }, [])
+      depthPacking: THREE.RGBADepthPacking,
+    });
+  }, []);
 
   useEffect(() => {
     Object.entries(controlsUniform).forEach(([key, value]) => {
-        if (key.toLowerCase().includes('color')) {
-            material.current.uniforms[key].value.set(value);
-            depthMaterial.uniforms[key].value.set(value);
-        } else {
-            material.current.uniforms[key].value = value;
-            depthMaterial.uniforms[key].value = value;
-        }
-    })
-  }, [controlsUniform])
+      if (key.toLowerCase().includes("color")) {
+        material.current.uniforms[key].value.set(value);
+        depthMaterial.uniforms[key].value.set(value);
+      } else {
+        material.current.uniforms[key].value = value;
+        depthMaterial.uniforms[key].value = value;
+      }
+    });
+  }, [controlsUniform]);
 
+  //
   useFrame((state) => {
     const { elapsedTime } = state.clock;
-    state.raycaster.setFromCamera()
+
+    state.raycaster.setFromCamera(screenCursor.current, state.camera);
+    const intersection = state.raycaster.intersectObject(wobble.current);
+    if (intersection.length) {
+      // console.log(intersection[0])
+    }
+    if (!isAnimating.current)
+      gsap.fromTo(
+        material.current.uniforms.uCursorDistance,
+        { value: material.current.uniforms.uCursorDistance.value },
+        {
+          value: getCursorDistance(),
+          duration: getCursorDistance() >
+          material.current.uniforms.uCursorDistance.value 
+          ? 
+          .2 
+          : .7,
+          ease: 'linear',
+          onUpdate: () => {
+            isAnimating.current = true;
+            console.log("Updating");
+            depthMaterial.uniforms.uCursorDistance =
+              material.current.uniforms.uCursorDistance.value;
+            console.log(material.current.uniforms.uCursorDistance.value);
+          },
+          onComplete: () => {
+            isAnimating.current = false;
+          },
+        }
+      );
+
+    // material.current.uniforms.uCursorDistance.value = getCursorDistance();
+    // depthMaterial.uniforms.uCursorDistance.value = getCursorDistance();
     material.current.uniforms.uTime.value = elapsedTime;
     depthMaterial.uniforms.uTime.value = elapsedTime;
-  })
+  });
 
   return (
     <>
       <directionalLight
-        args={["#ffffff", 3]}
+        args={["#ffffff", 10]}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
         shadow-camera-far={15}
         shadow-normalBias={0.05}
-        position={[0, 5, 10]}
+        position={[3, 5, 10]}
       />
-      <mesh 
-        ref={wobble} 
-        receiveShadow={true} 
+      <mesh
+        ref={wobble}
+        receiveShadow={true}
         castShadow={true}
-        customDepthMaterial={depthMaterial}>
+        customDepthMaterial={depthMaterial}
+      >
         <customPhysicalMaterial
           ref={material}
           metalness={controlsMaterial.metalness}
@@ -113,7 +156,7 @@ export default function Experience() {
           transparent={true}
           wireframe={false}
         />
-        <primitive object={mergedGeometry} attach={'geometry'} />
+        <primitive object={mergedGeometry} attach={"geometry"} />
       </mesh>
     </>
   );

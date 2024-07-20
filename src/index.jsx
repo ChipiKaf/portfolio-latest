@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import { Canvas } from '@react-three/fiber'
 import Experience from './Experience.jsx'
 import { Scroll, ScrollControls } from '@react-three/drei'
+import Interface from './Interface.jsx'
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 
@@ -20,7 +21,7 @@ return (
     <ScrollControls pages={0} damping={0.1}>
     <Experience />
     <Scroll html>
-        <h1>Hello world</h1>
+        <Interface />
     </Scroll>
     </ScrollControls>
 </Canvas>

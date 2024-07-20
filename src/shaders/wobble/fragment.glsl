@@ -1,6 +1,12 @@
+varying float vWobble;
+uniform vec3 uColorA;
+uniform vec3 uColorB;
+
 void main()
 {
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
-    #include <tonemapping_fragment>
-    #include <colorspace_fragment>
+    float colorMix =  vWobble;
+    csm_DiffuseColor.rgb = mix(uColorA, uColorB, colorMix);
+
+    // Shiny tip
+    csm_Roughness = 1.0 - colorMix;
 }

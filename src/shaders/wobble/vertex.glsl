@@ -7,6 +7,7 @@ uniform float uStrength;
 uniform float uWarpPositionFrequency;
 uniform float uWarpTimeFrequency;
 uniform float uWarpStrength;
+uniform float uCursorDistance;
 
 varying float vWobble;
 
@@ -23,7 +24,7 @@ float getWobble(vec3 position)
     return simplexNoise4d(vec4(
         warpedPosition * uPositionFrequency,
         uTime * uTimeFrequency
-    )) * uStrength;
+    )) * uStrength * uCursorDistance;
 }
 
 void main()

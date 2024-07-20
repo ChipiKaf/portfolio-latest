@@ -1,11 +1,11 @@
 import * as THREE from 'three'
 
-export const createControlConfig = (uniforms) => {
+export const createControlConfig = (uniforms, exclude = []) => {
     const config = {};
 
     Object.keys(uniforms).forEach((name) => {
         const { value } = uniforms[name];
-
+        if (exclude.includes(name)) return;
         if (typeof value === 'number') {
             config[name] = {
                 value,

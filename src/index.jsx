@@ -1,4 +1,4 @@
-import './style.css'
+import './styles/main.scss'
 import ReactDOM from 'react-dom/client'
 import { Canvas } from '@react-three/fiber'
 import Experience from './Experience.jsx'
@@ -20,7 +20,7 @@ return (
 >
     <ScrollControls pages={0} damping={0.1}>
     <Experience />
-    <Scroll html>
+    <Scroll className="main-scroll" html>
         <Interface />
     </Scroll>
     </ScrollControls>

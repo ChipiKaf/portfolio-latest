@@ -15,10 +15,10 @@ const useMouse = () => {
     return () => window.removeEventListener('pointermove', handlePointMove);
   }, [])
   const getCursorDistance = () => {
-    const cursorDistance = screenCursorPrevious.current.distanceTo(screenCursor.current) * 20;
+    const cursorDistance = screenCursorPrevious.current.distanceTo(screenCursor.current) * 10;
 
     // const normalized = Math.min(Math.max(1 + cursorDistance, 1), 2);
-    const normalized = Math.min(Math.max(cursorDistance, 0) + 0.3, 1);
+    const normalized = Math.min(Math.max(cursorDistance, 0) + 0.3, .9);
     screenCursorPrevious.current.copy(screenCursor.current);
 
     return normalized;

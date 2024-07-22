@@ -97,30 +97,31 @@ export default function Experience() {
     if (intersection.length) {
       // console.log(intersection[0])
     }
-    if (!isAnimating.current)
+    if (!isAnimating.current) {
+  
       gsap.fromTo(
         material.current.uniforms.uCursorDistance,
         { value: material.current.uniforms.uCursorDistance.value },
         {
           value: getCursorDistance(),
-          duration: getCursorDistance() >
-          material.current.uniforms.uCursorDistance.value 
+          duration:  getCursorDistance() >
+          material.current.uniforms.uCursorDistance.value
           ? 
-          .2 
-          : .7,
-          ease: 'linear',
+          .1 
+          : .5,
+          ease: getCursorDistance() >
+          material.current.uniforms.uCursorDistance.value ? 'expo.in' : 'linear',
           onUpdate: () => {
             isAnimating.current = true;
-            console.log("Updating");
             depthMaterial.uniforms.uCursorDistance =
               material.current.uniforms.uCursorDistance.value;
-            console.log(material.current.uniforms.uCursorDistance.value);
           },
           onComplete: () => {
             isAnimating.current = false;
           },
         }
       );
+    }
 
     // material.current.uniforms.uCursorDistance.value = getCursorDistance();
     // depthMaterial.uniforms.uCursorDistance.value = getCursorDistance();
@@ -131,13 +132,13 @@ export default function Experience() {
   return (
     <>
       <directionalLight
-        args={["#ffffff", 10]}
+        args={["#ffffff", 15]}
         castShadow
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
         shadow-camera-far={15}
         shadow-normalBias={0.05}
-        position={[3, 5, 10]}
+        position={[0, 5, 10]}
       />
       <mesh
         ref={wobble}

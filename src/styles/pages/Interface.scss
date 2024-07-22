@@ -1,0 +1,23 @@
+@import '../themes/typography';
+.home-section {
+    display: flex;
+    height: calc(100vh - 16rem);
+    // flex-direction: column;
+    // margin-bottom: 20rem;
+    justify-content: space-between;
+    
+    align-items: flex-start;
+    padding: 0 10rem;
+    
+    .right-section {
+        display: flex;
+        align-items: flex-end;
+        justify-content: end;
+        height: 90%;
+    }
+
+    // & > h1 {
+    //     margin-bottom: 16rem;
+    // }
+}
+

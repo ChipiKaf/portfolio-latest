@@ -1,1 +1,18 @@
 // Typography styles
+@import '../themes/typography';
+.main-heading {
+    font-size: 10rem;
+    // text-align: center;
+    font-family: $heading-font;
+    color: lighten($text-color, 25);
+    // z-index: -1000;
+}
+.minor-heading {
+    font-family: $minor-heading-font;
+    font-size: 1.5rem;
+    color: lighten($text-color, 10);
+}
+.large {
+    font-size: 13rem;
+    z-index: -100000;
+}

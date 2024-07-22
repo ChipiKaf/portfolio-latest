@@ -20,7 +20,8 @@ export default function Experience() {
   const material = useRef();
   const wobble = useRef();
   const isAnimating = useRef(false);
-  const { getCursorDistance, screenCursor } = useMouse();
+  const { getCursorDistance, camCursor, screenCursor } = useMouse();
+  const initialCamPosition = useRef(new THREE.Vector3(9999, 9999, 9999));
   const canvas = useCanvas();
   const controlsMaterial = useControls("Material", {
     metalness: {

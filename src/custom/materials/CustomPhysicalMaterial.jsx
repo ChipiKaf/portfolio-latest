@@ -15,8 +15,8 @@ export const uniforms = {
     uWarpTimeFrequency: new THREE.Uniform(0.12),
     uWarpStrength: new THREE.Uniform(1.7),
 
-    uColorA: new THREE.Uniform(new THREE.Color("#0000ff")),
-    uColorB: new THREE.Uniform(new THREE.Color("#ff0000"))
+    uColorA: new THREE.Uniform(new THREE.Color("#CBD9C5")),
+    uColorB: new THREE.Uniform(new THREE.Color("#E6F288"))
 } 
 
 class CustomPhysicalMaterial extends CustomShaderMaterial {

@@ -166,7 +166,7 @@ const Navbar = () => {
             { current: baseRadius.current },
             {
               current: baseRadius.current + 7,
-              duration: config.duration,
+              duration: config.duration - .5,
               delay: config.delay - config.delay + .1,
               ease: "power2.out",
             }
@@ -231,7 +231,7 @@ const Navbar = () => {
             { current: baseRadius.current },
             {
               current: baseRadius.current - 7,
-              duration: config.duration,
+              duration: config.duration -.5,
               delay: config.delay - config.delay,
               ease: "power2.out",
             }

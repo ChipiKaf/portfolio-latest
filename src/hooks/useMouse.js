@@ -15,6 +15,7 @@ const useMouse = () => {
         camCursor.current.y = (event.clientY - window.innerHeight / 2) * 0.005;
 
     }
+
     window.addEventListener('pointermove', handlePointMove);
 
     return () => window.removeEventListener('pointermove', handlePointMove);

@@ -29,6 +29,9 @@ export default function Experience() {
   const { getCursorDistance, camCursor, screenCursor } = useMouse();
   const initialCamPosition = useRef(new THREE.Vector3(9999, 9999, 9999));
   const canvas = useCanvas();
+  const isClick = useRef(false);
+  const mouseHoldCounts = useRef(0);
+  const isMouseDown = useRef(false)
   // #region controls
   // const controlsMaterial = useControls("Material", {
   //   metalness: {
@@ -80,6 +83,65 @@ export default function Experience() {
   // }, [controlsUniform]);
   // #endregion
 
+  useEffect(() => {
+    const handlePointerDown = () => {
+      isMouseDown.current = true;
+      // isClick.current = true;
+    }
+    const handleClick = () => {
+      console.log("Click queue")
+      isMouseDown.current = false;
+      // isAnimating.current = false;
+      if (!isClick.current) {
+        isClick.current = true;
+        const newValue = Math.min(mouseHoldCounts.current * 10, 4)
+
+        gsap.fromTo(
+          material.current.uniforms.uStrength,
+          { value: material.current.uniforms.uStrength.value },
+          {
+            value: material.current.uniforms.uStrength.value + newValue,
+            duration: 1,
+            onUpdate: () => {
+              depthMaterial.uniforms.uCursorDistance =
+                material.current.uniforms.uCursorDistance.value;
+            },
+            onComplete: () => {
+              gsap.fromTo(
+                material.current.uniforms.uStrength,
+                { value: material.current.uniforms.uStrength.value },
+                {
+                  value: material.current.uniforms.uStrength.value - newValue,
+                  duration: 1,
+                  onUpdate: () => {
+                    depthMaterial.uniforms.uCursorDistance =
+                      material.current.uniforms.uCursorDistance.value;
+                  },
+                  onComplete: () => {
+                    isClick.current = false
+                    mouseHoldCounts.current = 0
+                  },
+                }
+              );
+            },
+          }
+        );
+
+        setTimeout(() => {
+          console.log(newValue)
+          console.log(material.current.uniforms.uStrength.value)
+
+        }, 1300)
+
+      }
+    };
+
+    window.addEventListener("pointerdown", handlePointerDown);
+
+    window.addEventListener("pointerup", handleClick);
+    return () => window.removeEventListener("click", handleClick);
+  }, []);
+
   const mergedGeometry = useMemo(() => {
     const geometry = mergeVertices(new THREE.IcosahedronGeometry(2.5, 50));
     geometry.computeTangents(); // Needed for shader
@@ -98,15 +160,18 @@ export default function Experience() {
   }, []);
 
   //
-  useFrame((state) => {
+  useFrame((state, delta) => {
     const { elapsedTime } = state.clock;
-
+    if (isMouseDown.current) {mouseHoldCounts.current += delta
+      console.log(mouseHoldCounts.current)
+    }
+    // else mouseHoldCounts.current = 0 
     state.raycaster.setFromCamera(screenCursor.current, state.camera);
     const intersection = state.raycaster.intersectObject(wobble.current);
     if (intersection.length) {
       // console.log(intersection[0])
     }
-    if (!isAnimating.current) {
+    if (!isAnimating.current && !isClick.current) {
       gsap.fromTo(
         material.current.uniforms.uCursorDistance,
         { value: material.current.uniforms.uCursorDistance.value },

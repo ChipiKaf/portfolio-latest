@@ -9,7 +9,7 @@
   font-family: $heading-font;
   color: lighten($text-color, 25);
   overflow: hidden;
-
+  user-select: none;
   .bold {
     font-weight: 200;
   }
@@ -21,6 +21,7 @@
   opacity: 0;
   color: lighten($text-color, 10);
   animation: appear 1s cubic-bezier(.18,.93,.46,1.01) 2s forwards;
+    user-select: none;
 }
 
 .slide-in-bottom {

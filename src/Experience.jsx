@@ -15,7 +15,13 @@ import useMouse from "./hooks/useMouse";
 import useCanvas from "./hooks/useCanvas";
 
 extend({ OrbitControls, CustomPhysicalMaterial });
-
+const materialDefaults = {
+  metalness: 0.6,
+  roughness: 1.0,
+  transmission: 0,
+  ior: 1.5,
+  thickness: 1.5,
+};
 export default function Experience() {
   const material = useRef();
   const wobble = useRef();
@@ -23,42 +29,56 @@ export default function Experience() {
   const { getCursorDistance, camCursor, screenCursor } = useMouse();
   const initialCamPosition = useRef(new THREE.Vector3(9999, 9999, 9999));
   const canvas = useCanvas();
-  const controlsMaterial = useControls("Material", {
-    metalness: {
-      value: 0,
-      min: 0,
-      max: 1,
-      step: 0.001,
-    },
-    roughness: {
-      value: 0.5,
-      min: 0,
-      max: 1,
-      step: 0.001,
-    },
-    transmission: {
-      value: 0,
-      min: 0,
-      max: 1,
-      step: 0.001,
-    },
-    ior: {
-      value: 1.5,
-      min: 0,
-      max: 10,
-      step: 0.001,
-    },
-    thickness: {
-      value: 1.5,
-      min: 0,
-      max: 10,
-      step: 0.001,
-    },
-  });
-  const controlsUniform = useControls(
-    "Uniform",
-    createControlConfig(uniforms, ["uCursorDistance"])
-  );
+  // #region controls
+  // const controlsMaterial = useControls("Material", {
+  //   metalness: {
+  //     value: 0.60,
+  //     min: 0,
+  //     max: 1,
+  //     step: 0.001,
+  //   },
+  //   roughness: {
+  //     value: 1.0,
+  //     min: 0,
+  //     max: 1,
+  //     step: 0.001,
+  //   },
+  //   transmission: {
+  //     value: 0,
+  //     min: 0,
+  //     max: 1,
+  //     step: 0.001,
+  //   },
+  //   ior: {
+  //     value: 1.5,
+  //     min: 0,
+  //     max: 10,
+  //     step: 0.001,
+  //   },
+  //   thickness: {
+  //     value: 1.5,
+  //     min: 0,
+  //     max: 10,
+  //     step: 0.001,
+  //   },
+  // });
+  // const controlsUniform = useControls(
+  //   "Uniform",
+  //   createControlConfig(uniforms, ["uCursorDistance"])
+  // );
+
+  // useEffect(() => {
+  //   Object.entries(controlsUniform).forEach(([key, value]) => {
+  //     if (key.toLowerCase().includes("color")) {
+  //       material.current.uniforms[key].value.set(value);
+  //       depthMaterial.uniforms[key].value.set(value);
+  //     } else {
+  //       material.current.uniforms[key].value = value;
+  //       depthMaterial.uniforms[key].value = value;
+  //     }
+  //   });
+  // }, [controlsUniform]);
+  // #endregion
 
   const mergedGeometry = useMemo(() => {
     const geometry = mergeVertices(new THREE.IcosahedronGeometry(2.5, 50));
@@ -77,18 +97,6 @@ export default function Experience() {
     });
   }, []);
 
-  useEffect(() => {
-    Object.entries(controlsUniform).forEach(([key, value]) => {
-      if (key.toLowerCase().includes("color")) {
-        material.current.uniforms[key].value.set(value);
-        depthMaterial.uniforms[key].value.set(value);
-      } else {
-        material.current.uniforms[key].value = value;
-        depthMaterial.uniforms[key].value = value;
-      }
-    });
-  }, [controlsUniform]);
-
   //
   useFrame((state) => {
     const { elapsedTime } = state.clock;
@@ -99,19 +107,21 @@ export default function Experience() {
       // console.log(intersection[0])
     }
     if (!isAnimating.current) {
-  
       gsap.fromTo(
         material.current.uniforms.uCursorDistance,
         { value: material.current.uniforms.uCursorDistance.value },
         {
           value: getCursorDistance(),
-          duration:  getCursorDistance() >
-          material.current.uniforms.uCursorDistance.value
-          ? 
-          .1 
-          : .5,
-          ease: getCursorDistance() >
-          material.current.uniforms.uCursorDistance.value ? 'expo.in' : 'linear',
+          duration:
+            getCursorDistance() >
+            material.current.uniforms.uCursorDistance.value
+              ? 0.1
+              : 0.5,
+          ease:
+            getCursorDistance() >
+            material.current.uniforms.uCursorDistance.value
+              ? "expo.in"
+              : "linear",
           onUpdate: () => {
             isAnimating.current = true;
             depthMaterial.uniforms.uCursorDistance =
@@ -147,7 +157,7 @@ export default function Experience() {
         castShadow={true}
         customDepthMaterial={depthMaterial}
       >
-        <customPhysicalMaterial
+        {/* <customPhysicalMaterial
           ref={material}
           metalness={controlsMaterial.metalness}
           roughness={controlsMaterial.roughness}
@@ -155,6 +165,18 @@ export default function Experience() {
           transmission={controlsMaterial.transmission}
           ior={controlsMaterial.ior}
           thickness={controlsMaterial.thickness}
+          transparent={true}
+          wireframe={false}
+        /> */}
+
+        <customPhysicalMaterial
+          ref={material}
+          metalness={materialDefaults.metalness}
+          roughness={materialDefaults.roughness}
+          color={materialDefaults.color}
+          transmission={materialDefaults.transmission}
+          ior={materialDefaults.ior}
+          thickness={materialDefaults.thickness}
           transparent={true}
           wireframe={false}
         />

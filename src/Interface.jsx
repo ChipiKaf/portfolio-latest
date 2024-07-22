@@ -7,9 +7,15 @@ const Interface = () => {
       <section className="home-section">
         <div className="left-section">
           <h1 className="main-heading">
-            <span className="large">Welcome</span>
+            <span className="large slide-in-bottom">Welcome</span>
           </h1>
-          <h1 className="main-heading">to Chipili dev</h1>
+          <h1 className="main-heading-2">
+            
+           <span className="slide-in-bottom-delayed">
+           to <span className="bold">Chipili dev</span>
+            </span>
+            
+            </h1>
         </div>
         <div className="right-section">
           <h3 className="minor-heading">Create anything</h3>

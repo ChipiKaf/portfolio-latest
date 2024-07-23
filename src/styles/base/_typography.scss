@@ -4,7 +4,7 @@
 
 [class*="main-heading"] {
   @include respond(big-desktop) {
-    font-size: 10rem;
+    font-size: 7rem;
   }
 
   @include respond(tab-port) {
@@ -27,7 +27,7 @@
   user-select: none;
   font-family: $heading-font;
   .bold {
-    font-weight: 200;
+    font-weight: 300;
   }
 }
 
@@ -67,5 +67,5 @@
     font-size: 10rem;
   }
 
-  font-weight: 200;
+  font-weight: 400;
 }

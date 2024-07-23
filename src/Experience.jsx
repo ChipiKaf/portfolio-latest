@@ -93,7 +93,7 @@ export default function Experience() {
       // isAnimating.current = false;
       if (!isClick.current) {
         isClick.current = true;
-        const newValue = Math.min(mouseHoldCounts.current * 10, 4);
+        const newValue = Math.min(mouseHoldCounts.current * 10, .5);
 
         gsap.fromTo(
           material.current.uniforms.uStrength,

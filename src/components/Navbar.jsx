@@ -161,11 +161,11 @@ const Navbar = () => {
           // Normal state animations
           timeline.current
           .to(offsetter, { current: lineWidth.current, duration: config.duration, delay: config.delay, ease: "elastic.out" })
-          .to(strokeColor, { current: 'white', duration: config.duration, ease: "elastic.out" }, "<")
-          .to(baseRadius, { current: baseRadius.current + 7, duration: config.duration - 0.5, ease: "power2.out" }, "<")
-            .to(heightAdjuster, { current: 0, duration: config.duration, ease: "elastic.out" }, "<")
-            .to(smallerRize, { current: 0, duration: config.duration, ease: "elastic.out" }, "<")
-            .to(pixelFixer, { current: 0, duration: config.duration, ease: "elastic.out" }, "<");
+          .to(baseRadius, { current: baseRadius.current + 7, duration: config.duration / 2, ease: "power2.out" }, "<")
+          .to(heightAdjuster, { current: 0, duration: config.duration, ease: "elastic.out" }, "<")
+          .to(smallerRize, { current: 0, duration: config.duration, ease: "elastic.out" }, "<")
+          .to(pixelFixer, { current: 0, duration: config.duration, ease: "elastic.out" }, "<")
+          .to(strokeColor, { current: 'white', duration: config.duration, ease: "elastic.out" }, `${config.duration / 2}`)
     
           if (!dropdown.current.classList.contains('active')) {
             dropdown.current.classList.add('active');
@@ -175,11 +175,11 @@ const Navbar = () => {
           // Reverse state animations
           timeline.current
             .to(offsetter, { current: 0, duration: config.duration, delay: config.delay, ease: "elastic.out" })
-            .to(strokeColor, { current: config.strokeColor, duration: config.duration, ease: "elastic.out" }, "<")
-            .to(baseRadius, { current: baseRadius.current - 7, duration: config.duration - 0.5, ease: "power2.out" }, "<")
+            .to(baseRadius, { current: baseRadius.current - 7, duration: config.duration / 2, ease: "power2.out" }, "<")
             .to(heightAdjuster, { current: config.heightAdjuster, duration: config.duration, ease: "elastic.out" }, "<")
             .to(smallerRize, { current: config.smallerRize, duration: config.duration, ease: "elastic.out" }, "<")
-            .to(pixelFixer, { current: config.pixelFixer, duration: config.duration, ease: "elastic.out" }, "<");
+            .to(pixelFixer, { current: config.pixelFixer, duration: config.duration, ease: "elastic.out" }, "<")
+            .to(strokeColor, { current: config.strokeColor, duration: config.duration, ease: "elastic.out" }, `${config.duration - config.duration / 10}`)
     
           if (dropdown.current.classList.contains('active')) {
             dropdown.current.classList.remove('active');

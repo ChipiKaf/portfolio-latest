@@ -26,7 +26,9 @@ const Navbar = () => {
   const strokeColor = useRef(config.strokeColor);
   const baseRadius = useRef(config.baseRadius)
 
+  const changeInProgress = useRef(false);
   const offsetter = useRef(0);
+  const timeline = useRef(null);
   const isNormal = useRef(false);
   const heightAdjuster = useRef(config.heightAdjuster);
   const smallerRize = useRef(config.smallerRize);
@@ -96,7 +98,7 @@ const Navbar = () => {
       ctx.clearRect(0, 0, 100, 100);
 
       drawDistortedCircle(ctx, time, 0, "black", 2.5);
-      drawDistortedCircle(ctx, time, 4, "gray", 2.5, 1);
+      drawDistortedCircle(ctx, time, 4, "gray", 2.5, 2);
       drawCenterLines(ctx);
     },
     [drawDistortedCircle, drawCenterLines]
@@ -112,7 +114,7 @@ const Navbar = () => {
 
     drawDistortedCircle(ctx);
   }, [canvas]);
-
+  const isAnimating = useRef(false)
   useEffect(() => {
     const ctx = canvas.current.getContext("2d");
     drawDistortedCircle(ctx);
@@ -137,140 +139,52 @@ const Navbar = () => {
     };
 
     const handleClick = () => {
-      if (inButton.current) {
+      if (inButton.current && !isAnimating.current) {
+        isAnimating.current = true;
+        changeInProgress.current = true;
         isNormal.current = !isNormal.current;
-
+    
+        // Clear previous animations
+        if (timeline.current) {
+          timeline.current.kill();
+        }
+    
+        // Create a new timeline
+        timeline.current = gsap.timeline({
+          onComplete: () => {
+            isAnimating.current = false;
+            changeInProgress.current = false;
+          }
+        });
+    
         if (isNormal.current) {
-          gsap.fromTo(
-            offsetter,
-            { current: 0 },
-            {
-              current: lineWidth.current,
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
-          gsap.fromTo(
-            heightAdjuster,
-            { current: heightAdjuster.current },
-            {
-              current: 0,
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
-          gsap.fromTo(
-            baseRadius,
-            { current: baseRadius.current },
-            {
-              current: baseRadius.current + 7,
-              duration: config.duration - .5,
-              delay: config.delay - config.delay + .1,
-              ease: "power2.out",
-            }
-          );
-          gsap.fromTo(
-            smallerRize,
-            { current: smallerRize.current },
-            {
-              current: 0,
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
-          gsap.fromTo(
-            strokeColor,
-            { current: strokeColor.current },
-            {
-              current: 'white',
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
-          gsap.fromTo(
-            pixelFixer,
-            { current: pixelFixer.current },
-            {
-              current: 0,
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
+          // Normal state animations
+          timeline.current
+          .to(offsetter, { current: lineWidth.current, duration: config.duration, delay: config.delay, ease: "elastic.out" })
+          .to(strokeColor, { current: 'white', duration: config.duration, ease: "elastic.out" }, "<")
+          .to(baseRadius, { current: baseRadius.current + 7, duration: config.duration - 0.5, ease: "power2.out" }, "<")
+            .to(heightAdjuster, { current: 0, duration: config.duration, ease: "elastic.out" }, "<")
+            .to(smallerRize, { current: 0, duration: config.duration, ease: "elastic.out" }, "<")
+            .to(pixelFixer, { current: 0, duration: config.duration, ease: "elastic.out" }, "<");
+    
           if (!dropdown.current.classList.contains('active')) {
-            dropdown.current.classList.add('active')
-            logo.current.classList.add('light')
+            dropdown.current.classList.add('active');
+            logo.current.classList.add('light');
           }
         } else {
-          gsap.fromTo(
-            offsetter,
-            { current: lineWidth.current },
-            {
-              current: 0,
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
-          gsap.fromTo(
-            strokeColor,
-            { current: 'white' },
-            {
-              current: config.strokeColor,
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
-          gsap.fromTo(
-            baseRadius,
-            { current: baseRadius.current },
-            {
-              current: baseRadius.current - 7,
-              duration: config.duration -.5,
-              delay: config.delay - config.delay,
-              ease: "power2.out",
-            }
-          );
-          gsap.fromTo(
-            heightAdjuster,
-            { current: heightAdjuster.current },
-            {
-              current: config.heightAdjuster,
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
-          gsap.fromTo(
-            smallerRize,
-            { current: smallerRize.current },
-            {
-              current: config.smallerRize,
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
-          gsap.fromTo(
-            pixelFixer,
-            { current: 0 },
-            {
-              current: config.pixelFixer,
-              duration: config.duration,
-              delay: config.delay,
-              ease: "elastic.out",
-            }
-          );
+          // Reverse state animations
+          timeline.current
+            .to(offsetter, { current: 0, duration: config.duration, delay: config.delay, ease: "elastic.out" })
+            .to(strokeColor, { current: config.strokeColor, duration: config.duration, ease: "elastic.out" }, "<")
+            .to(baseRadius, { current: baseRadius.current - 7, duration: config.duration - 0.5, ease: "power2.out" }, "<")
+            .to(heightAdjuster, { current: config.heightAdjuster, duration: config.duration, ease: "elastic.out" }, "<")
+            .to(smallerRize, { current: config.smallerRize, duration: config.duration, ease: "elastic.out" }, "<")
+            .to(pixelFixer, { current: config.pixelFixer, duration: config.duration, ease: "elastic.out" }, "<");
+    
           if (dropdown.current.classList.contains('active')) {
-            dropdown.current.classList.remove('active')
-            logo.current.classList.remove('light')
+            dropdown.current.classList.remove('active');
+            logo.current.classList.remove('light');
           }
-
         }
       }
     };

@@ -31,7 +31,7 @@ export default function Experience() {
   const canvas = useCanvas();
   const isClick = useRef(false);
   const mouseHoldCounts = useRef(0);
-  const isMouseDown = useRef(false)
+  const isMouseDown = useRef(false);
   // #region controls
   // const controlsMaterial = useControls("Material", {
   //   metalness: {
@@ -87,14 +87,13 @@ export default function Experience() {
     const handlePointerDown = () => {
       isMouseDown.current = true;
       // isClick.current = true;
-    }
+    };
     const handleClick = () => {
-      console.log("Click queue")
       isMouseDown.current = false;
       // isAnimating.current = false;
       if (!isClick.current) {
         isClick.current = true;
-        const newValue = Math.min(mouseHoldCounts.current * 10, 4)
+        const newValue = Math.min(mouseHoldCounts.current * 10, 4);
 
         gsap.fromTo(
           material.current.uniforms.uStrength,
@@ -118,21 +117,14 @@ export default function Experience() {
                       material.current.uniforms.uCursorDistance.value;
                   },
                   onComplete: () => {
-                    isClick.current = false
-                    mouseHoldCounts.current = 0
+                    isClick.current = false;
+                    mouseHoldCounts.current = 0;
                   },
                 }
               );
             },
           }
         );
-
-        setTimeout(() => {
-          console.log(newValue)
-          console.log(material.current.uniforms.uStrength.value)
-
-        }, 1300)
-
       }
     };
 
@@ -162,10 +154,9 @@ export default function Experience() {
   //
   useFrame((state, delta) => {
     const { elapsedTime } = state.clock;
-    if (isMouseDown.current) {mouseHoldCounts.current += delta
-      console.log(mouseHoldCounts.current)
+    if (isMouseDown.current) {
+      mouseHoldCounts.current += delta;
     }
-    // else mouseHoldCounts.current = 0 
     state.raycaster.setFromCamera(screenCursor.current, state.camera);
     const intersection = state.raycaster.intersectObject(wobble.current);
     if (intersection.length) {

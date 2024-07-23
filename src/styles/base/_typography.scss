@@ -3,13 +3,29 @@
 @import "../base/animations";
 
 [class*="main-heading"] {
+  @include respond(big-desktop) {
+    font-size: 10rem;
+  }
+
+  @include respond(tab-port) {
+    font-size: 7rem;
+  }
+
+  @include respond(tab-land) {
+    font-size: 8rem;
+  }
+
+  @include respond(phone) {
+    font-size: 7rem;
+  }
+
   font-size: 10rem;
   font-weight: 200;
   // text-align: center;
-  font-family: $heading-font;
   color: lighten($text-color, 25);
   overflow: hidden;
   user-select: none;
+  font-family: $heading-font;
   .bold {
     font-weight: 200;
   }
@@ -20,23 +36,36 @@
   font-size: 1.5rem;
   opacity: 0;
   color: lighten($text-color, 10);
-  animation: appear 1s cubic-bezier(.18,.93,.46,1.01) 2s forwards;
-    user-select: none;
+  animation: appear 1s cubic-bezier(0.18, 0.93, 0.46, 1.01) 4s forwards;
+  user-select: none;
 }
 
 .slide-in-bottom {
-    display: block;
-    transform: translateY(100%);
-    animation: entry-text 1s cubic-bezier(.18,.93,.46,1.01) .2s forwards;
+  display: block;
+  transform: translateY(100%);
+  animation: entry-text 1s cubic-bezier(0.18, 0.93, 0.46, 1.01) 2s forwards;
 }
 
 .slide-in-bottom-delayed {
-    display: block;
-    transform: translateY(100%);
-    animation: entry-text 1s cubic-bezier(.18,.93,.46,1.01) 1s forwards;
-
+  display: block;
+  transform: translateY(100%);
+  animation: entry-text 1s cubic-bezier(0.18, 0.93, 0.46, 1.01) 3s forwards;
 }
 .large {
-  font-size: 18rem;
+  @include respond(big-desktop) {
+    font-size: 18rem;
+  }
+  @include respond(tab-port) {
+    font-size: 12rem;
+  }
+
+  @include respond(tab-land) {
+    font-size: 14rem;
+  }
+
+  @include respond(phone) {
+    font-size: 10rem;
+  }
+
   font-weight: 200;
 }

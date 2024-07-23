@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "../styles/components/Navbar.scss";
 import { Noise } from "noisejs";
 import { useFrame } from "@react-three/fiber";
@@ -21,19 +21,45 @@ const Navbar = () => {
   const logo = useRef()
   const noise = useMemo(() => new Noise(0, []));
   const inButton = useRef(false);
-  const lineWidth = useRef(config.lineWidth); // Width of the lines
+  const lineWidth = useRef(0); // Width of the lines
   const pixelFixer = useRef(config.pixelFixer);
   const strokeColor = useRef(config.strokeColor);
-  const baseRadius = useRef(config.baseRadius)
+  const baseRadius = useRef(0)
 
   const changeInProgress = useRef(false);
   const offsetter = useRef(0);
   const timeline = useRef(null);
   const isNormal = useRef(false);
+  const [isActive, setIsActive] = useState(false)
   const heightAdjuster = useRef(config.heightAdjuster);
   const smallerRize = useRef(config.smallerRize);
+
+  useEffect(() => {
+    gsap.fromTo(baseRadius, { current: 0 }, {
+      current: config.baseRadius,
+      duration: 2,
+      delay: .5,
+      ease: 'expo.out'
+    })
+
+    gsap.fromTo(lineWidth, { current: 0 }, {
+      current: config.lineWidth,
+      duration: .5,
+      delay: 1.5,
+      ease: 'expo.out'
+    })
+  }, [])
+
+  const menuItems = useMemo(() => [
+    { title: 'Home' }, 
+    { title: 'About' },
+    { title: 'Work' },
+    { title: 'Contact' },
+  ], [])
+
   const drawDistortedCircle = useCallback(
     (ctx, time, offset, color = "black", strength = 5, centerOffset = 0) => {
+      if (baseRadius.current === 0) return
       ctx.beginPath();
       const numPoints = 1000;
       const centerX = 50 + centerOffset;
@@ -62,6 +88,7 @@ const Navbar = () => {
   );
 
   const drawCenterLines = useCallback((ctx) => {
+    if (lineWidth.current === 0) return;
     const lineHeight = 1; // Height of the lines
 
     const centerX = 50 + pixelFixer.current;
@@ -138,11 +165,12 @@ const Navbar = () => {
       canvas.current.style.cursor = "default";
     };
 
-    const handleClick = () => {
+    const handleClick = (e) => {
       if (inButton.current && !isAnimating.current) {
         isAnimating.current = true;
         changeInProgress.current = true;
         isNormal.current = !isNormal.current;
+        setIsActive(isNormal.current)
     
         // Clear previous animations
         if (timeline.current) {
@@ -212,7 +240,13 @@ const Navbar = () => {
           <canvas ref={canvas} width={100} height={100}></canvas>
         </div>
       </nav>
-      <div ref={dropdown} className="drop-down"></div>
+      <div ref={dropdown} className="drop-down">
+      {menuItems.map((menuItem) => (
+        <div className="drop-down__item">
+          <h4 className={`drop-down__text ${isActive && 'active'}`}>{ menuItem.title }</h4>
+      </div>
+      ))}
+      </div>
     </>
   );
 };

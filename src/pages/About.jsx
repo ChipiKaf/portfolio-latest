@@ -222,10 +222,15 @@ const About = () => {
             {experience.map((value) => {
               return (
                 <div className="row d-flex justify-content-center justify-content-md-start align-items-start">
-                  <div className="col-6 bullet">{value.bullet}</div>
-                  <div className="col-6">
+                  <div className="col-2">
+                    <div className="bullet">
+                    {value.bullet}
+
+                    </div>
+                    </div>
+                  <div className="col-10">
                     <h2
-                      className="page-text d-flex text-nowrap align-items-center"
+                      className="page-text d-flex align-items-center"
                       dangerouslySetInnerHTML={{ __html: value.company }}
                     ></h2>
                     <p

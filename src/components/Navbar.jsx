@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import "../styles/components/Navbar.scss";
 import { Noise } from "noisejs";
-import { useFrame } from "@react-three/fiber";
 import gsap from "gsap";
+import { useNavigate } from "react-router-dom";
+import useAnimationFrame from "../hooks/useAnimationFrame";
 
 const config = {
   lineWidth: 10,
@@ -25,6 +26,7 @@ const Navbar = () => {
   const pixelFixer = useRef(config.pixelFixer);
   const strokeColor = useRef(config.strokeColor);
   const baseRadius = useRef(0)
+  const navigate = useNavigate();
 
   const changeInProgress = useRef(false);
   const offsetter = useRef(0);
@@ -51,10 +53,10 @@ const Navbar = () => {
   }, [])
 
   const menuItems = useMemo(() => [
-    { title: 'Home' }, 
-    { title: 'About' },
-    { title: 'Work' },
-    { title: 'Contact' },
+    { title: 'Home', onClick: () => { navigate('/') } }, 
+    { title: 'About', onClick: () => { navigate('/about') } },
+    { title: 'Work', onClick: () => { navigate('/about') } },
+    { title: 'Contact', onClick: () => { navigate('/about') } },
   ], [])
 
   const drawDistortedCircle = useCallback(
@@ -131,11 +133,12 @@ const Navbar = () => {
     [drawDistortedCircle, drawCenterLines]
   );
 
-  useFrame((state) => {
+  useAnimationFrame((elapsedTime) => {
     if (canvas.current) {
-      animate(canvas.current.getContext("2d"), state.clock.elapsedTime * 1.6);
+      animate(canvas.current.getContext("2d"), elapsedTime * 1.6)
     }
-  });
+  })
+
   useEffect(() => {
     const ctx = canvas.current.getContext("2d");
 
@@ -242,7 +245,7 @@ const Navbar = () => {
       </nav>
       <div ref={dropdown} className="drop-down">
       {menuItems.map((menuItem) => (
-        <div className="drop-down__item">
+        <div className="drop-down__item" onClick={menuItem.onClick}>
           <h4 className={`drop-down__text ${isActive && 'active'}`}>{ menuItem.title }</h4>
       </div>
       ))}

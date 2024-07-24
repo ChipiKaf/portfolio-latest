@@ -1,6 +1,6 @@
-import Navbar from "./components/Navbar";
-import "./styles/pages/Interface.scss";
-const Interface = () => {
+import Navbar from "../components/Navbar";
+import "../styles/pages/Interface.scss";
+const About = () => {
   return (
     <>
       <section className="home-section row">
@@ -18,7 +18,7 @@ const Interface = () => {
           <div className="left-content">
             <h1 className="main-heading">
               <span className="large slide-in-bottom fs-md-1 fs-sm-2">
-                WELCOME
+                Welcome
               </span>
             </h1>
             <h1 className="main-heading-2">
@@ -47,4 +47,4 @@ const Interface = () => {
   );
 };
 
-export default Interface;
+export default About;

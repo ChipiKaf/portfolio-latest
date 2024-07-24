@@ -4,19 +4,19 @@
 
 [class*="main-heading"] {
   @include respond(big-desktop) {
-    font-size: 7rem;
+    font-size: 6rem;
   }
 
   @include respond(tab-port) {
-    font-size: 7rem;
+    font-size: 5rem;
   }
 
   @include respond(tab-land) {
-    font-size: 8rem;
+    font-size: 5rem;
   }
 
   @include respond(phone) {
-    font-size: 7rem;
+    font-size: 4rem;
   }
 
   font-size: 10rem;
@@ -53,19 +53,19 @@
 }
 .large {
   @include respond(big-desktop) {
-    font-size: 18rem;
+    font-size: 12rem;
   }
   @include respond(tab-port) {
-    font-size: 12rem;
+    font-size: 7rem;
   }
 
   @include respond(tab-land) {
-    font-size: 14rem;
+    font-size: 8rem;
   }
 
   @include respond(phone) {
-    font-size: 10rem;
+    font-size: 5rem;
   }
 
-  font-weight: 400;
+  font-weight: 200;
 }

@@ -1,30 +1,21 @@
 import './styles/main.scss'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ReactDOM from 'react-dom/client'
-import { Canvas } from '@react-three/fiber'
-import Experience from './Experience.jsx'
-import { Scroll, ScrollControls } from '@react-three/drei'
-import Interface from './Interface.jsx'
+import Home from './pages/Home';
+import About from './pages/About';
+import Navbar from './components/Navbar';
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 
 function App() {
 return (
-    <Canvas
-    camera={ {
-        fov: 35,
-        near: 0.1,
-        far: 100,
-        position: [ 3, 5, 15 ]
-    } }
-    shadows
->
-    <ScrollControls pages={0} damping={0.1}>
-    <Experience />
-    <Scroll className="main-scroll" html>
-        <Interface />
-    </Scroll>
-    </ScrollControls>
-</Canvas>
+    <Router>
+        <Navbar />
+        <Routes>   
+            <Route exact path="/" Component={Home} />
+            <Route exact path="/about" Component={About} />
+        </Routes>
+    </Router>
 )
 }
 

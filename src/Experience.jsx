@@ -25,6 +25,7 @@ const materialDefaults = {
 export default function Experience() {
   const material = useRef();
   const wobble = useRef();
+  const wobbleScale = useRef(new THREE.Vector3(0, 0, 0))
   const isAnimating = useRef(false);
   const { getCursorDistance, camCursor, screenCursor } = useMouse();
   const initialCamPosition = useRef(new THREE.Vector3(9999, 9999, 9999));
@@ -32,65 +33,13 @@ export default function Experience() {
   const isClick = useRef(false);
   const mouseHoldCounts = useRef(0);
   const isMouseDown = useRef(false);
-  // #region controls
-  // const controlsMaterial = useControls("Material", {
-  //   metalness: {
-  //     value: 0.60,
-  //     min: 0,
-  //     max: 1,
-  //     step: 0.001,
-  //   },
-  //   roughness: {
-  //     value: 1.0,
-  //     min: 0,
-  //     max: 1,
-  //     step: 0.001,
-  //   },
-  //   transmission: {
-  //     value: 0,
-  //     min: 0,
-  //     max: 1,
-  //     step: 0.001,
-  //   },
-  //   ior: {
-  //     value: 1.5,
-  //     min: 0,
-  //     max: 10,
-  //     step: 0.001,
-  //   },
-  //   thickness: {
-  //     value: 1.5,
-  //     min: 0,
-  //     max: 10,
-  //     step: 0.001,
-  //   },
-  // });
-  // const controlsUniform = useControls(
-  //   "Uniform",
-  //   createControlConfig(uniforms, ["uCursorDistance"])
-  // );
-
-  // useEffect(() => {
-  //   Object.entries(controlsUniform).forEach(([key, value]) => {
-  //     if (key.toLowerCase().includes("color")) {
-  //       material.current.uniforms[key].value.set(value);
-  //       depthMaterial.uniforms[key].value.set(value);
-  //     } else {
-  //       material.current.uniforms[key].value = value;
-  //       depthMaterial.uniforms[key].value = value;
-  //     }
-  //   });
-  // }, [controlsUniform]);
-  // #endregion
 
   useEffect(() => {
     const handlePointerDown = () => {
       isMouseDown.current = true;
-      // isClick.current = true;
     };
     const handleClick = () => {
       isMouseDown.current = false;
-      // isAnimating.current = false;
       if (!isClick.current) {
         isClick.current = true;
         const newValue = Math.min(mouseHoldCounts.current * 10, .5);
@@ -127,7 +76,6 @@ export default function Experience() {
         );
       }
     };
-
     window.addEventListener("pointerdown", handlePointerDown);
 
     window.addEventListener("pointerup", handleClick);
@@ -151,16 +99,25 @@ export default function Experience() {
     });
   }, []);
 
+  useEffect(() => {
+    const dummyVar = {current: 0 }
+    gsap.fromTo(dummyVar, { current: 0 }, {
+      current: 1,
+      duration: 1,
+      ease: 'expo.out',
+      onUpdate: (val) => {
+        console.log(dummyVar)
+        wobble.current.scale.set(dummyVar.current, dummyVar.current, dummyVar.current)
+      }
+
+    })
+  }, [wobble])
+
   //
   useFrame((state, delta) => {
     const { elapsedTime } = state.clock;
     if (isMouseDown.current) {
       mouseHoldCounts.current += delta;
-    }
-    state.raycaster.setFromCamera(screenCursor.current, state.camera);
-    const intersection = state.raycaster.intersectObject(wobble.current);
-    if (intersection.length) {
-      // console.log(intersection[0])
     }
     if (!isAnimating.current && !isClick.current) {
       gsap.fromTo(
@@ -190,8 +147,6 @@ export default function Experience() {
       );
     }
 
-    // material.current.uniforms.uCursorDistance.value = getCursorDistance();
-    // depthMaterial.uniforms.uCursorDistance.value = getCursorDistance();
     material.current.uniforms.uTime.value = elapsedTime;
     depthMaterial.uniforms.uTime.value = elapsedTime;
   });
@@ -210,20 +165,10 @@ export default function Experience() {
       <mesh
         ref={wobble}
         receiveShadow={true}
+        position={[0, 1, 0]}
         castShadow={true}
         customDepthMaterial={depthMaterial}
       >
-        {/* <customPhysicalMaterial
-          ref={material}
-          metalness={controlsMaterial.metalness}
-          roughness={controlsMaterial.roughness}
-          color={controlsMaterial.color}
-          transmission={controlsMaterial.transmission}
-          ior={controlsMaterial.ior}
-          thickness={controlsMaterial.thickness}
-          transparent={true}
-          wireframe={false}
-        /> */}
 
         <customPhysicalMaterial
           ref={material}

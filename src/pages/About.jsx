@@ -205,7 +205,12 @@ const About = () => {
   return (
     <>
       <section className="about-section">
-        <h1 className="page-heading">ABOUT</h1>
+        <h1 className="overflow-hidden d-flex justify-content-center align-items-center">
+          <span className="page-heading">
+            ABOUT
+            
+            </span> 
+          </h1>
         <p className="page-text page-text-container">
           My name is Chipili, a dedicated and innovative Full Stack Software
           Engineer and Create developer with a solid foundation in Engineering.

@@ -79,7 +79,9 @@
 .page-heading {
   font-size: 10rem;
   text-align: center;
+  transform: translateY(100%);
   font-family: $heading-font;
+  animation: slide-up .4s cubic-bezier(.2,1.14,.42,.95) 1.2s forwards;
 }
 
 .page-text {

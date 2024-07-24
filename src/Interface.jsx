@@ -17,12 +17,12 @@ const Interface = () => {
         >
           <div className="left-content">
             <h1 className="main-heading">
-              <span className="large slide-in-bottom fs-md-1 fs-sm-2">
+              <span className="large type fs-md-1 fs-sm-2">
                 WELCOME
               </span>
             </h1>
             <h1 className="main-heading-2">
-              <span className="slide-in-bottom-delayed">
+              <span className="type-delayed">
                 to <span className="bold">Chipili dev</span>
               </span>
             </h1>

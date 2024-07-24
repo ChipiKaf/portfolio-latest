@@ -1,0 +1,110 @@
+@import "../themes/typography";
+@import "../abstracts/mixins";
+
+.about-section {
+    overflow: auto;
+    height: calc(100vh - 16rem);
+    // padding: 0 10rem;
+
+    @include respond(big-desktop) {
+        padding: 0 10rem;
+    }
+
+    @include respond(tab-port) {
+        padding: 0 1rem;
+    }
+
+    @include respond(tab-land) {
+        padding: 0 1rem;
+    }
+
+    @include respond(phone) {
+        padding: 0;
+    }
+
+    .emoji {
+        width: auto;
+        height: 3rem;
+    }
+
+    & .progress-bar {
+        height: 1rem;
+        border-radius: 1rem;
+        width: 90%;
+        background-color: red;
+
+        /* For Chrome, Safari, and Opera */
+        &.good {
+            &::-webkit-progress-bar {
+                background-color: #eee;
+            }
+            &::-webkit-progress-value {
+                background-color: #4caf50; /* Green color */
+            }
+
+            /* For Firefox */
+            &::-moz-progress-bar {
+                background-color: #4caf50; /* Green color */
+            }
+
+            /* For Internet Explorer */
+            &::-ms-fill {
+                background-color: #4caf50; /* Green color */
+            }
+        }
+
+        &.ok {
+            &::-webkit-progress-bar {
+                background-color: #eee;
+            }
+            &::-webkit-progress-value {
+                background-color: #fce703; /* Green color */
+            }
+
+            /* For Firefox */
+            &::-moz-progress-bar {
+                background-color: #fce703; /* Green color */
+            }
+
+            /* For Internet Explorer */
+            &::-ms-fill {
+                background-color: #fce703; /* Green color */
+            }
+        }
+
+        &.bad {
+            &::-webkit-progress-bar {
+                background-color: #eee;
+            }
+            &::-webkit-progress-value {
+                background-color: #fc0303; /* Green color */
+            }
+
+            /* For Firefox */
+            &::-moz-progress-bar {
+                background-color: #fc0303; /* Green color */
+            }
+
+            /* For Internet Explorer */
+            &::-ms-fill {
+                background-color: #fc0303; /* Green color */
+            }
+        }
+    }
+
+    & .progress-label {
+        font-size: 2rem;
+    }
+
+    .gap-20 {
+        gap: 1rem;
+    }
+}
+
+p.progress-label {
+    margin-bottom: .4rem;
+    display: inline-block;
+    &:not(:last-child) {
+        margin-right: 1rem
+    }
+}

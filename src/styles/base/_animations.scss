@@ -1,12 +1,12 @@
 // Animations
 
-@keyframes entry-text {
+@keyframes typing-text {
     from {
-        transform: translateY(100%);
+        width: 0%;
     }
 
     to {
-        transform: translateY(0);
+        width: 100%;
     }
 }
 

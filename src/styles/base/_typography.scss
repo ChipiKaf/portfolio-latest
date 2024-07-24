@@ -36,20 +36,24 @@
   font-size: 1.5rem;
   opacity: 0;
   color: lighten($text-color, 10);
-  animation: appear 1s cubic-bezier(0.18, 0.93, 0.46, 1.01) 4s forwards;
+  animation: appear 1s steps(40, end) 4s forwards;
   user-select: none;
 }
 
-.slide-in-bottom {
+.type {
   display: block;
-  transform: translateY(100%);
-  animation: entry-text 1s cubic-bezier(0.18, 0.93, 0.46, 1.01) 2s forwards;
+  width: 0;
+  white-space: nowrap; /* Prevents text wrapping */
+  overflow: hidden; /* Hides overflow */
+  animation: typing-text 1s steps(40, end) 2s forwards;
 }
 
-.slide-in-bottom-delayed {
+.type-delayed {
   display: block;
-  transform: translateY(100%);
-  animation: entry-text 1s cubic-bezier(0.18, 0.93, 0.46, 1.01) 3s forwards;
+  width: 0;
+  white-space: nowrap; /* Prevents text wrapping */
+  overflow: hidden; /* Hides overflow */
+  animation: typing-text 1s steps(40, end) 3s forwards;
 }
 .large {
   @include respond(big-desktop) {
@@ -68,4 +72,42 @@
   }
 
   font-weight: 200;
+}
+.page-text-container {
+  padding: 4rem 0;  
+}
+.page-heading {
+  font-size: 10rem;
+  text-align: center;
+  font-family: $heading-font;
+}
+
+.page-text {
+  font-size: 3rem;
+  font-family: $paragraph-font;
+  &.small {
+    font-size: 2rem;
+  }
+}
+.bullet-container {
+  gap: 20px
+}
+.bullet {
+  width: 5rem;
+    height: 5rem;
+    background-color: black;
+    color: white;
+    font-size: 2.3rem;
+    font-family: $heading-2-font;
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+
+
+.section-heading {
+  font-family: $heading-2-font;
+  font-size: 7rem
 }

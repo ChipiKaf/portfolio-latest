@@ -4,17 +4,15 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import CustomPhysicalMaterial, {
   uniforms,
 } from "./custom/materials/CustomPhysicalMaterial";
-import { useControls } from "leva";
 import { useEffect, useMemo, useRef } from "react";
 import vertexShader from "./shaders/wobble/vertex.glsl";
 import { mergeVertices } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import { createControlConfig } from "./utils/objectUtils";
 import CustomShaderMaterial from "three-custom-shader-material/vanilla";
 import gsap from "gsap";
 import useMouse from "./hooks/useMouse";
-import useCanvas from "./hooks/useCanvas";
 
 extend({ OrbitControls, CustomPhysicalMaterial });
+
 const materialDefaults = {
   metalness: 0.6,
   roughness: 1.0,
@@ -22,14 +20,12 @@ const materialDefaults = {
   ior: 1.5,
   thickness: 1.5,
 };
+
 export default function Experience() {
   const material = useRef();
   const wobble = useRef();
-  const wobbleScale = useRef(new THREE.Vector3(0, 0, 0))
   const isAnimating = useRef(false);
-  const { getCursorDistance, camCursor, screenCursor } = useMouse();
-  const initialCamPosition = useRef(new THREE.Vector3(9999, 9999, 9999));
-  const canvas = useCanvas();
+  const { getCursorDistance } = useMouse();
   const isClick = useRef(false);
   const mouseHoldCounts = useRef(0);
   const isMouseDown = useRef(false);
@@ -43,7 +39,7 @@ export default function Experience() {
       if (!isClick.current) {
         isClick.current = true;
         const newValue = Math.min(mouseHoldCounts.current * 10, .5);
-
+        if (!material.current)
         gsap.fromTo(
           material.current.uniforms.uStrength,
           { value: material.current.uniforms.uStrength.value },
@@ -79,7 +75,11 @@ export default function Experience() {
     window.addEventListener("pointerdown", handlePointerDown);
 
     window.addEventListener("pointerup", handleClick);
-    return () => window.removeEventListener("click", handleClick);
+    return () => {
+      window.removeEventListener("pointerdown", handlePointerDown);
+      window.removeEventListener("pointerup", handleClick);
+    
+    }
   }, []);
 
   const mergedGeometry = useMemo(() => {

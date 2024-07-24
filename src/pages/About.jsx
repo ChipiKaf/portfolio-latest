@@ -1,6 +1,14 @@
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
+import LocomotiveScroll from 'locomotive-scroll';
+import 'locomotive-scroll/dist/locomotive-scroll.css'
+// import 'locomotive-scroll/dist/locomotive-scroll'
 import "../styles/pages/About.scss";
+// import gsap from 'gsap'
+// import { ScrollSmoother } from 'gsap/ScrollSmoother';
+
+// gsap.registerPlugin(ScrollSmoother);
+
 export const getCountryFlagEmoji = (countryCode) => {
   const codePoints = countryCode
     .toUpperCase()
@@ -9,6 +17,9 @@ export const getCountryFlagEmoji = (countryCode) => {
   return String.fromCodePoint(...codePoints);
 };
 const About = () => {
+  const scrollRef = useRef();
+  const [smoothScrollY, setSmoothScrollY] = useState(0);
+  const smoothScrollRef = useRef(0);
   const experience = useMemo(() => {
     return [
       {
@@ -144,16 +155,8 @@ const About = () => {
   }, []);
 
   const languages = useMemo(() => {
-    return [
-      "Javascript",
-      "Typescript",
-      "Python",
-      "HTML",
-      "CSS",
-      "SCSS",
-      "C#",
-    ]
-  }, [])
+    return ["Javascript", "Typescript", "Python", "HTML", "CSS", "SCSS", "C#"];
+  }, []);
 
   const frameworks = useMemo(() => {
     return [
@@ -161,8 +164,8 @@ const About = () => {
       "Vue",
       "React (including Redux and React Native)",
       ".Net Core",
-    ]
-  }, [])
+    ];
+  }, []);
 
   const toolsAndPlatforms = useMemo(() => {
     return [
@@ -173,18 +176,12 @@ const About = () => {
       "Node.js",
       "Jest",
       "Postman",
-    ]
-  }, [])
+    ];
+  }, []);
 
   const collaborationAndDocumentation = useMemo(() => {
-    return [
-      "Git",
-      "Jira",
-      "Confluence",
-      "Gitlab",
-      "Trello",
-    ]
-  }, [])
+    return ["Git", "Jira", "Confluence", "Gitlab", "Trello"];
+  }, []);
 
   const devOpsAndCICD = useMemo(() => {
     return [
@@ -197,20 +194,47 @@ const About = () => {
       "Codedeploy",
       "Codepipeline",
       "ECS",
-      "Docker"
-    ]
-  }, [])
-  
+      "Docker",
+    ];
+  }, []);
+  const handleScroll = useCallback(() => {
+    const parallaxElements = document.querySelectorAll(".parallax");
+    parallaxElements.forEach((element) => {
+      const speed = element.getAttribute("data-speed");
+      console.log(scrollRef.current)
+      const offset = scrollRef.current.scrollTop * speed;
+      element.style.transform = `translateY(${offset}px)`;
+      console.log(element.style.transform);
+    });
+  }, []);
+  useEffect(() => {
+    const scrollElement = scrollRef.current;
+    // const scroll = new LocomotiveScroll({
+    //   el: scrollElement,
+    //   smooth: true,
+    //   multiplier: 5, // Adjust the scrolling speed
+    //   // class: 'is-revealed',
+    // });
+    if (scrollElement) {
+      scrollElement.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (scrollElement) {
+        scrollElement.removeEventListener("scroll", handleScroll);
+        // if (scroll) scroll.destroy()
+      }
+    };
+  }, [scrollRef]);
+
+
 
   return (
     <>
-      <section className="about-section">
-        <h1 className="overflow-hidden d-flex justify-content-center align-items-center">
-          <span className="page-heading">
-            ABOUT
-            
-            </span> 
-          </h1>
+      <section ref={scrollRef} className="about-section">
+        <h1 data-speed="0.1"  className="overflow-hidden d-flex justify-content-center align-items-center">
+          <span className="page-heading">ABOUT</span>
+        </h1>
         <p className="page-text page-text-container">
           My name is Chipili, a dedicated and innovative Full Stack Software
           Engineer and Create developer with a solid foundation in Engineering.
@@ -224,15 +248,17 @@ const About = () => {
             <h2 class="section-heading">Experience</h2>
           </div>
           <div className="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center bullet-container">
-            {experience.map((value) => {
+            {experience.map((value, i) => {
               return (
-                <div className="row d-flex justify-content-center justify-content-md-start align-items-start">
+                <div
+                  key={`${i}-experience`}
+                  className="row d-flex justify-content-center justify-content-md-start align-items-start"
+                >
                   <div className="col-2">
-                    <div className="bullet">
-                    {value.bullet}
-
+                    <div data-speed=".2" className="bullet parallax">
+                      {value.bullet}
                     </div>
-                    </div>
+                  </div>
                   <div className="col-10">
                     <h2
                       className="page-text d-flex align-items-center"
@@ -280,79 +306,97 @@ const About = () => {
               <div className="col-12">
                 <h3 className="page-text small">Ratings</h3>
               </div>
-              {skills.map((skill) => {
+              {skills.map((skill, i) => {
                 return (
-                  <div className="col-12 d-flex align-items-center justify-content-start gap-20">
+                  <div
+                    key={`${i}-skill`}
+                    className="col-12 d-flex align-items-center justify-content-start gap-20"
+                  >
                     <div className="row w-100">
                       <div className="col d-flex align-items-center">
-                      <progress
-                      className={`progress-bar ${skill.progress <= 30 ? 'bad' : (skill.progress <= 70 ? 'ok' : 'good')}`}
-                      id="frontend-development"
-                      value={`${skill.progress}`}
-                      max="100"
-                      color="#ff0000"
-                    ></progress>
+                        <progress
+                          className={`progress-bar ${
+                            skill.progress <= 30
+                              ? "bad"
+                              : skill.progress <= 70
+                              ? "ok"
+                              : "good"
+                          }`}
+                          id="frontend-development"
+                          value={`${skill.progress}`}
+                          max="100"
+                          color="#ff0000"
+                        ></progress>
                       </div>
                       <div className="col">
-                      <label
-                      className="progress-label"
-                      for="frontend-development"
-                    >
-                      { skill.label }
-                    </label>
+                        <label
+                          className="progress-label"
+                          for="frontend-development"
+                        >
+                          {skill.label}
+                        </label>
                       </div>
                     </div>
-
                     &nbsp;
-
                   </div>
                 );
               })}
               <div className="col-12">
-              <h3 className="page-text small mt-5">Languages</h3>
-              { languages.map((language) => {
-                return (
-                  <p className="progress-label"><b>{ language }</b></p> 
-                )
-              }) }
+                <h3 className="page-text small mt-5">Languages</h3>
+                {languages.map((language, i) => {
+                  return (
+                    <p key={`${i}-language`} className="progress-label">
+                      <b>{language}</b>
+                    </p>
+                  );
+                })}
               </div>
 
               <div className="col-12">
-              <h3 className="page-text small mt-5">Frameworks/Libraries</h3>
-              { frameworks.map((language) => {
-                return (
-                  <p className="progress-label"><b>{ language }</b></p> 
-                )
-              }) }
+                <h3 className="page-text small mt-5">Frameworks/Libraries</h3>
+                {frameworks.map((framework, i) => {
+                  return (
+                    <p key={`${i}-framework`} className="progress-label">
+                      <b>{framework}</b>
+                    </p>
+                  );
+                })}
               </div>
 
               <div className="col-12">
-              <h3 className="page-text small mt-5">Tools & Platforms</h3>
-              { toolsAndPlatforms.map((language) => {
-                return (
-                  <p className="progress-label"><b>{ language }</b></p> 
-                )
-              }) }
+                <h3 className="page-text small mt-5">Tools & Platforms</h3>
+                {toolsAndPlatforms.map((toolOrPlatform, i) => {
+                  return (
+                    <p key={`${i}-toolOrPlatform`} className="progress-label">
+                      <b>{toolOrPlatform}</b>
+                    </p>
+                  );
+                })}
               </div>
 
               <div className="col-12">
-              <h3 className="page-text small mt-5">Collaboration & Documentation</h3>
-              { collaborationAndDocumentation.map((language) => {
-                return (
-                  <p className="progress-label"><b>{ language }</b></p> 
-                )
-              }) }
+                <h3 className="page-text small mt-5">
+                  Collaboration & Documentation
+                </h3>
+                {collaborationAndDocumentation.map((collabOrDoc, i) => {
+                  return (
+                    <p key={`${i}-collabOrDoc`} className="progress-label">
+                      <b>{collabOrDoc}</b>
+                    </p>
+                  );
+                })}
               </div>
- 
+
               <div className="col-12">
-              <h3 className="page-text small mt-5">DevOps & CI/CD</h3>
-              { devOpsAndCICD.map((language) => {
-                return (
-                  <p className="progress-label"><b>{ language }</b></p> 
-                )
-              }) }
+                <h3 className="page-text small mt-5">DevOps & CI/CD</h3>
+                {devOpsAndCICD.map((devOpOrCi, i) => {
+                  return (
+                    <p key={`${i}-devOpOrCi`} className="progress-label">
+                      <b>{devOpOrCi}</b>
+                    </p>
+                  );
+                })}
               </div>
- 
             </div>
           </div>
         </div>

@@ -2,7 +2,11 @@
 @import "../abstracts/mixins";
 
 .about-section {
+    // display: block;
     overflow: auto;
+    scroll-behavior: smooth;
+    // top: '0';
+    // left: '0';
     height: calc(100vh - 16rem);
     // padding: 0 10rem;
 
@@ -100,7 +104,9 @@
         gap: 1rem;
     }
 }
-
+.height {
+    min-height: 20rem;
+}
 p.progress-label {
     margin-bottom: .4rem;
     display: inline-block;

@@ -11,12 +11,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 html {
   font-size: 62.5%;
   font-family: "Patua One", serif;
   font-weight: 400;
+  scroll-behavior: smooth;
 }
 
 html,
@@ -30,6 +32,7 @@ body,
     height: 100%;
     /* background: ivory; */
     background: lighten($tertiary-color, 40);
+    scroll-behavior: smooth;
 }
 
 .main-scroll {

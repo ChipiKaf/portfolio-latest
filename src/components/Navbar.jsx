@@ -249,8 +249,8 @@ const Navbar = () => {
         </div>
       </nav>
       <div ref={dropdown} className="drop-down">
-      {menuItems.map((menuItem) => (
-        <div className="drop-down__item" onClick={() => {
+      {menuItems.map((menuItem, i) => (
+        <div key={`${i}-menuItem`} className="drop-down__item" onClick={() => {
           animateIcons()
           menuItem.onClick()
           }}>

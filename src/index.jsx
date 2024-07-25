@@ -4,11 +4,13 @@ import ReactDOM from 'react-dom/client'
 import Home from './pages/Home';
 import About from './pages/About';
 import Navbar from './components/Navbar';
+import Cursor from './components/Cursor';
 
 const root = ReactDOM.createRoot(document.querySelector('#root'))
 
 function App() {
 return (
+    <>
     <Router>
         <Navbar />
         <Routes>   
@@ -16,6 +18,8 @@ return (
             <Route exact path="/about" Component={About} />
         </Routes>
     </Router>
+    <Cursor />
+    </>
 )
 }
 

@@ -11,14 +11,14 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 html {
   font-size: 62.5%;
   font-family: "Patua One", serif;
   font-weight: 400;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
 html,
@@ -32,7 +32,7 @@ body,
     height: 100%;
     /* background: ivory; */
     background: lighten($tertiary-color, 40);
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
 }
 
 .main-scroll {
@@ -41,4 +41,46 @@ body,
 
 .overflow-hidden {
   overflow: hidden;
+}
+
+/* Hide scrollbar when not scrolling */
+:root {
+  --scrollbar-width: 8px;
+  --scrollbar-track-color: transparent;
+  --scrollbar-thumb-color: rgba(193, 193, 193, 0.5); /* Semi-transparent light gray */
+  --scrollbar-thumb-hover-color: rgba(168, 168, 168, 0.8); /* Darker and more opaque on hover */
+}
+
+/* For Webkit-based browsers (Chrome, Safari, etc.) */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb-color);
+  border-radius: calc(var(--scrollbar-width) / 2);
+  transition: background 0.3s ease-out;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover-color);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb-color) var(--scrollbar-track-color);
+}
+
+/* Hide scrollbar when not scrolling */
+body:not(:hover)::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+body {
+  overflow-y: overlay;
 }

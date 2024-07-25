@@ -106,7 +106,6 @@ export default function Experience() {
       duration: 1,
       ease: 'expo.out',
       onUpdate: (val) => {
-        console.log(dummyVar)
         wobble.current.scale.set(dummyVar.current, dummyVar.current, dummyVar.current)
       }
 

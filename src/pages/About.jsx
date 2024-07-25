@@ -1,13 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import Navbar from "../components/Navbar";
-import LocomotiveScroll from 'locomotive-scroll';
+import { useMemo, useRef } from "react";
 import 'locomotive-scroll/dist/locomotive-scroll.css'
-// import 'locomotive-scroll/dist/locomotive-scroll'
+import { motion, useScroll, useMotionValueEvent, useTransform, useSpring } from 'framer-motion'
 import "../styles/pages/About.scss";
-// import gsap from 'gsap'
-// import { ScrollSmoother } from 'gsap/ScrollSmoother';
 
-// gsap.registerPlugin(ScrollSmoother);
+const clamp = (value, min, max) => Math.max(Math.min(value, max), min);
 
 export const getCountryFlagEmoji = (countryCode) => {
   const codePoints = countryCode
@@ -17,9 +13,13 @@ export const getCountryFlagEmoji = (countryCode) => {
   return String.fromCodePoint(...codePoints);
 };
 const About = () => {
-  const scrollRef = useRef();
-  const [smoothScrollY, setSmoothScrollY] = useState(0);
-  const smoothScrollRef = useRef(0);
+  const scrollRef = useRef()
+  const { scrollY } = useScroll({ 
+    container: scrollRef, 
+    smooth: 0.5,
+   })
+  
+
   const experience = useMemo(() => {
     return [
       {
@@ -33,6 +33,7 @@ const About = () => {
               This experience not only broadened my technical skillset but 
               also enhanced my ability to collaborate with global teams 
               and understand different cultural and business contexts.`,
+        languages: ''
       },
       {
         bullet: "I.I",
@@ -68,6 +69,7 @@ const About = () => {
           Managed tasks and tickets using <b>Jira</b>.
 
         `,
+        languages: 'react node'
       },
       {
         bullet: "I.II",
@@ -90,6 +92,7 @@ const About = () => {
         Focused on optimizing the user interface for better engagement and usability.
         Implemented responsive design principles to ensure compatibility across various devices.
         `,
+        languages: 'vue php'
       },
       {
         bullet: "I.III",
@@ -121,6 +124,7 @@ const About = () => {
           <b>Code Quality and Refactoring:</b><br />
           Performed extensive refactoring, enforcing <b>CLEAN code practices</b>.
         `,
+        languages: 'react node'
       },
     ];
   }, []);
@@ -197,42 +201,25 @@ const About = () => {
       "Docker",
     ];
   }, []);
-  const handleScroll = useCallback(() => {
-    const parallaxElements = document.querySelectorAll(".parallax");
-    parallaxElements.forEach((element) => {
-      const speed = element.getAttribute("data-speed");
-      console.log(scrollRef.current)
-      const offset = scrollRef.current.scrollTop * speed;
-      element.style.transform = `translateY(${offset}px)`;
-      console.log(element.style.transform);
-    });
-  }, []);
-  useEffect(() => {
-    const scrollElement = scrollRef.current;
-    // const scroll = new LocomotiveScroll({
-    //   el: scrollElement,
-    //   smooth: true,
-    //   multiplier: 5, // Adjust the scrolling speed
-    //   // class: 'is-revealed',
-    // });
-    if (scrollElement) {
-      scrollElement.addEventListener("scroll", handleScroll);
-    }
 
-    return () => {
-      if (scrollElement) {
-        scrollElement.removeEventListener("scroll", handleScroll);
-        // if (scroll) scroll.destroy()
-      }
-    };
-  }, [scrollRef]);
-
-
-
+  const smoothScrollY = useSpring(useTransform(scrollY, (value) => {
+    const dampenedValue = value * 0.05
+    return clamp(dampenedValue, 0, 5);
+  }), {
+    stiffness: 50,
+    damping: 10,
+    mass: 0.1,
+  });
+  
+  const smoothScrollY2 = useSpring(useTransform(scrollY, (value) => value * 0.1), {
+    stiffness: 100,
+    damping: 30,
+    mass: 0.5,
+  });
   return (
     <>
-      <section ref={scrollRef} className="about-section">
-        <h1 data-speed="0.1"  className="overflow-hidden d-flex justify-content-center align-items-center">
+      <motion.section ref={scrollRef} className="about-section">
+        <h1  className="overflow-hidden d-flex justify-content-center align-items-center">
           <span className="page-heading">ABOUT</span>
         </h1>
         <p className="page-text page-text-container">
@@ -245,21 +232,22 @@ const About = () => {
         {/* <hr /> */}
         <div className="row mt-5 w-100">
           <div className="col-12 d-flex col-md-6 justify-content-center align-items-start">
-            <h2 class="section-heading">Experience</h2>
+            <motion.h2 style={{ y: smoothScrollY }} class="section-heading">Experience</motion.h2>
           </div>
           <div className="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center bullet-container">
             {experience.map((value, i) => {
               return (
                 <div
                   key={`${i}-experience`}
-                  className="row d-flex justify-content-center justify-content-md-start align-items-start"
+                  data-images={value.languages}
+                  className={`row d-flex justify-content-center justify-content-md-start align-items-start experience`}
                 >
                   <div className="col-2">
-                    <div data-speed=".2" className="bullet parallax">
+                    <motion.div style={{ y: smoothScrollY2 }} className="bullet parallax">
                       {value.bullet}
-                    </div>
+                    </motion.div>
                   </div>
-                  <div className="col-10">
+                  <div className="col-10 experience" data-images={value.languages}>
                     <h2
                       className="page-text d-flex align-items-center"
                       dangerouslySetInnerHTML={{ __html: value.company }}
@@ -278,7 +266,7 @@ const About = () => {
         {/* <hr /> */}
         <div className="row mt-5">
           <div className="col-12 d-flex col-md-6 justify-content-center">
-            <h2 class="section-heading">Education</h2>
+            <motion.h2 style={{ y: smoothScrollY }} class="section-heading">Education</motion.h2>
           </div>
           <div className="col-12 col-md-6 d-flex flex-column justify-content-center">
             <h2 className="page-text small">
@@ -299,7 +287,7 @@ const About = () => {
         <hr />
         <div className="row mt-5">
           <div className="col-12 d-flex col-md-6 justify-content-center">
-            <h2 class="section-heading">Skills</h2>
+            <motion.h2 style={{ y: smoothScrollY }} class="section-heading">Skills</motion.h2>
           </div>
           <div className="col-12 col-md-6 d-flex flex-row align-items-center justify-content-start">
             <div className="row">
@@ -331,7 +319,7 @@ const About = () => {
                       <div className="col">
                         <label
                           className="progress-label"
-                          for="frontend-development"
+                          htmlFor="frontend-development"
                         >
                           {skill.label}
                         </label>
@@ -400,7 +388,7 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
     </>
   );
 };

@@ -2,13 +2,8 @@
 @import "../abstracts/mixins";
 
 .about-section {
-    // display: block;
     overflow: auto;
-    scroll-behavior: smooth;
-    // top: '0';
-    // left: '0';
     height: calc(100vh - 16rem);
-    // padding: 0 10rem;
 
     @include respond(big-desktop) {
         padding: 0 10rem;
@@ -112,5 +107,11 @@ p.progress-label {
     display: inline-block;
     &:not(:last-child) {
         margin-right: 1rem
+    }
+}
+
+.experience {
+    &:hover {
+        cursor: none;
     }
 }

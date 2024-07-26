@@ -38,13 +38,27 @@ a:visited {
 
     & .email {
         display: inline-block;
-        font-size: 5rem;
         font-family: $paragraph-font;
         padding: .5rem 2rem;
         color: darken($tertiary-color, 2);
         position: relative;
         overflow: hidden;
         transition: all 0.3s cubic-bezier(1,-0.03,.63,.05);
+        @include respond(big-desktop) {
+            font-size: 5rem;
+          }
+        
+          @include respond(tab-port) {
+            font-size: 4rem;
+          }
+        
+          @include respond(tab-land) {
+            font-size: 4rem;
+          }
+        
+          @include respond(phone) {
+            font-size: 3rem;
+          }
         &::before,
         &::after {
             content: "";

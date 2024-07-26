@@ -242,7 +242,9 @@ const About = () => {
                   data-images={value.languages}
                   className={`row d-flex justify-content-center justify-content-md-start align-items-start experience`}
                 >
-                  <div className="col-2">
+                  <div 
+                  data-images={value.languages}
+                  className="col-2 experience">
                     <motion.div style={{ y: smoothScrollY2 }} className="bullet parallax">
                       {value.bullet}
                     </motion.div>

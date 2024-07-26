@@ -1,6 +1,7 @@
 import "../styles/components/Cursor.scss";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { findAncestorWithClass } from "../utils/objectUtils";
 
 const CURSOR_SPEED = 0.08;
 const mouse = {
@@ -15,7 +16,7 @@ const Cursor = () => {
   const [showIcon, setShowIcon] = useState(false);
   const interval = useRef(null);
   const currentIndex = useRef(0);
-  const [noImages, setNoImages] = useState(true)
+  const [noImages, setNoImages] = useState(true);
 
   const animate = useCallback(() => {
     const distX = mouse.x - mouse.outlineX;
@@ -45,22 +46,28 @@ const Cursor = () => {
 
   useEffect(() => {
     const mouseEventListener = (e) => {
-      const element = e.target.parentElement;
+      /**
+       * @type HTMLElement
+       */
+      const currentElement = e.target;
+      const element = findAncestorWithClass(currentElement, "experience");
 
-      if (element.classList.contains("experience")) {
+      if (element) {
         setShowIcon(true);
         // cursorOutline.current.classList.remove("empty")
         const images = element.getAttribute("data-images").split(" ");
-        if (images[currentIndex.current] !== '') cursorOutline.current.style.backgroundImage = `url('/${images[currentIndex.current]}.png')`;
+        if (images[currentIndex.current] !== "")
+          cursorOutline.current.style.backgroundImage = `url('/${
+            images[currentIndex.current]
+          }.png')`;
 
-        if (images.length > 1 && interval.current === null)
-          {
-            setNoImages(false)
-            interval.current = setInterval(() => {
+        if (images.length > 1 && interval.current === null) {
+          setNoImages(false);
+          interval.current = setInterval(() => {
             const index = Math.floor(Math.random() * images.length);
 
             if (currentIndex.current !== index) {
-                cursorOutline.current.classList.add("switch");
+              cursorOutline.current.classList.add("switch");
               setTimeout(() => {
                 cursorOutline.current.style.backgroundImage = `url('/${images[index]}.png')`;
               }, 500);
@@ -69,13 +76,13 @@ const Cursor = () => {
               }, 510);
               currentIndex.current = index;
             }
-          }, 3000);}
-        else if (images.length === 1 && images[0] === '') {
-            cursorOutline.current.style.backgroundImage = ``;
-            setNoImages(true)
+          }, 3000);
+        } else if (images.length === 1 && images[0] === "") {
+          cursorOutline.current.style.backgroundImage = ``;
+          setNoImages(true);
         } else {
-            setNoImages(false)
-            cursorOutline.current.style.backgroundImage = `url('/${images[0]}.png')`;
+          setNoImages(false);
+          // cursorOutline.current.style.backgroundImage = `url('/${images[0]}.png')`;
         }
       } else {
         setShowIcon(false);
@@ -94,7 +101,9 @@ const Cursor = () => {
     <>
       <div
         ref={cursorOutline}
-        className={`cursor ${showIcon ? "active" : ""} ${noImages ? 'empty' : ''}`}
+        className={`cursor ${showIcon ? "active" : ""} ${
+          noImages ? "empty" : ""
+        }`}
       ></div>
     </>
   );

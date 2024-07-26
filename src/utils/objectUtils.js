@@ -23,3 +23,14 @@ export const createControlConfig = (uniforms, exclude = []) => {
     });
     return config;
 }
+
+export function findAncestorWithClass(element, className) {
+    let currentElement = element;
+    while (currentElement !== null) {
+      if (currentElement.classList.contains(className)) {
+        return currentElement;
+      }
+      currentElement = currentElement.parentElement;
+    }
+    return null;
+  }

@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 const DropDown = ({ menuItems, isActive, animateIcons }) => {
   const dropdown = useRef();
   const canvas = useRef()
-  console.log(menuItems);
   useEffect(() => {
     if (isActive)
       dropdown.current.classList.add("active");
@@ -22,7 +21,6 @@ const DropDown = ({ menuItems, isActive, animateIcons }) => {
           className="drop-down__item"
           data-prefix={ menuItem.title }
           onClick={() => {
-            console.log("Clicked")
             animateIcons();
             menuItem.onClick();
           }}

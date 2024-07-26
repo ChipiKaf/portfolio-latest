@@ -1,7 +1,14 @@
 import { useMemo, useRef } from "react";
-import 'locomotive-scroll/dist/locomotive-scroll.css'
-import { motion, useScroll, useMotionValueEvent, useTransform, useSpring } from 'framer-motion'
+import "locomotive-scroll/dist/locomotive-scroll.css";
+import {
+  motion,
+  useScroll,
+  useMotionValueEvent,
+  useTransform,
+  useSpring,
+} from "framer-motion";
 import "../styles/pages/About.scss";
+import ProgressBar from "../components/ProgressBar";
 
 const clamp = (value, min, max) => Math.max(Math.min(value, max), min);
 
@@ -13,12 +20,11 @@ export const getCountryFlagEmoji = (countryCode) => {
   return String.fromCodePoint(...codePoints);
 };
 const About = () => {
-  const scrollRef = useRef()
-  const { scrollY } = useScroll({ 
-    container: scrollRef, 
+  const scrollRef = useRef();
+  const { scrollY } = useScroll({
+    container: scrollRef,
     smooth: 0.5,
-   })
-  
+  });
 
   const experience = useMemo(() => {
     return [
@@ -33,10 +39,65 @@ const About = () => {
               This experience not only broadened my technical skillset but 
               also enhanced my ability to collaborate with global teams 
               and understand different cultural and business contexts.`,
-        languages: ''
+        languages: "",
       },
       {
         bullet: "I.I",
+        company: `EPI-Centre (2024 - present) &nbsp; <img class="emoji" src="/belgium.png" />`,
+        text: `
+          Contributed to <b>'Epi-centre'</b>, an online document management system. This project provided extensive experience in frontend development, API management, and AWS services.
+          <br />
+          <br />
+          <b>Frontend Development:</b><br />
+          Led the frontend development focused on <b>React</b>.
+          Integrated <b>GraphQL APIs with AWS AppSync</b>, managing REST APIs via <b>AWS Lambda</b> and <b>API Gateway</b>.
+          Implemented state management using <b>RTK Query</b>.
+          <br />
+          <br />
+          <b>Backend Development:</b><br />
+          Worked with <b>Node.js</b> for updating the Lambdas.
+          Managed roles and permissions with <b>AWS IAM</b>.
+          Created resources with <b>AWS CDK</b> for different environments (develop, staging, prod).
+          <br />
+          <br />
+          <b>Database Management:</b><br />
+          Created migrations for <b>DynamoDB</b> to move data from an old schema to a new one ensuring compatibility.
+          <br />
+          <br />
+          <b>GraphQL Development:</b><br />
+          Worked with <b>AWS AppSync</b>, creating and updating resolvers.
+          <br />
+          <br />
+          <b>Code Quality and Refactoring:</b><br />
+          Performed extensive refactoring, enforcing <b>CLEAN code practices</b>.
+        `,
+        languages: "react node",
+      },
+      {
+        bullet: "I.II",
+        company: `Metics (2023 - Feb 2024) &nbsp; <img class="emoji" src="/netherlands.png" />`,
+        text: `
+        Contributed to <b>'Metics'</b>, an online financial modeling tool. This project allowed for significant enhancement of my skills in frontend development and user experience design.
+        <br />
+        <br />
+        <b>Frontend Development:</b><br />
+        Built new features and interfaces from Figma designs using <b>Vue</b> and <b>Nuxt3</b>.
+        Collaborated closely with design teams to ensure a seamless user experience.
+        <br />
+        <br />
+        <b>Collaboration:</b><br />
+        Worked with cross-functional teams to integrate new functionalities and improve existing ones.
+        Ensured alignment with design specifications and business requirements.
+        <br />
+        <br />
+        <b>User Experience:</b><br />
+        Focused on optimizing the user interface for better engagement and usability.
+        Implemented responsive design principles to ensure compatibility across various devices.
+        `,
+        languages: "vue php",
+      },
+      {
+        bullet: "I.III",
         company: `Nevolane (2021 - 2022) &nbsp; <img class="emoji" src="/switzerland.png" />`,
         text: `
           Contributed to <b>'Nevolane'</b>, a video calling service that simulates a virtual office. This project provided a comprehensive experience in full-stack development, cloud services, and real-time communications.
@@ -69,62 +130,40 @@ const About = () => {
           Managed tasks and tickets using <b>Jira</b>.
 
         `,
-        languages: 'react node'
+        languages: "react node",
       },
       {
-        bullet: "I.II",
-        company: `Metics (2023 - Feb 2024) &nbsp; <img class="emoji" src="/netherlands.png" />`,
+        bullet: "II",
+        company: `Penpass (2020 - 2021) &nbsp; <img class="emoji" src="/south-africa.png" />`,
         text: `
-        Contributed to <b>'Metics'</b>, an online financial modeling tool. This project allowed for significant enhancement of my skills in frontend development and user experience design.
+        At Penpass I managed a team developing educational software with <b>Angular</b> and <b>Node.js</b>, integrating serverless functions via <b>Google Cloud Platform</b> and <b>Firebase</b>. This role provided extensive experience in team leadership, full-stack development, and cloud integration.
+        <br />
+        <br />
+        <b>Team Leadership:</b><br />
+        Led a team of developers, ensuring effective collaboration and project management.
         <br />
         <br />
         <b>Frontend Development:</b><br />
-        Built new features and interfaces from Figma designs using <b>Vue</b> and <b>Nuxt3</b>.
-        Collaborated closely with design teams to ensure a seamless user experience.
+        Developed and maintained the frontend of the educational software using <b>Angular</b>, focusing on creating a user-friendly and engaging interface.
         <br />
         <br />
-        <b>Collaboration:</b><br />
-        Worked with cross-functional teams to integrate new functionalities and improve existing ones.
-        Ensured alignment with design specifications and business requirements.
+        <b>Backend Development:</b><br />
+        Built and managed the backend services using <b>Node.js</b>.
+        Integrated serverless functions to enhance application performance and scalability.
         <br />
         <br />
-        <b>User Experience:</b><br />
-        Focused on optimizing the user interface for better engagement and usability.
-        Implemented responsive design principles to ensure compatibility across various devices.
-        `,
-        languages: 'vue php'
-      },
-      {
-        bullet: "I.III",
-        company: `EPI-Centre (2024 - present) &nbsp; <img class="emoji" src="/belgium.png" />`,
-        text: `
-          Contributed to <b>'Epi-centre'</b>, an online document management system. This project provided extensive experience in frontend development, API management, and AWS services.
-          <br />
-          <br />
-          <b>Frontend Development:</b><br />
-          Led the frontend development focused on <b>React</b>.
-          Integrated <b>GraphQL APIs with AWS AppSync</b>, managing REST APIs via <b>AWS Lambda</b> and <b>API Gateway</b>.
-          Implemented state management using <b>RTK Query</b>.
-          <br />
-          <br />
-          <b>Backend Development:</b><br />
-          Worked with <b>Node.js</b> for updating the Lambdas.
-          Managed roles and permissions with <b>AWS IAM</b>.
-          Created resources with <b>AWS CDK</b> for different environments (develop, staging, prod).
-          <br />
-          <br />
-          <b>Database Management:</b><br />
-          Created migrations for <b>DynamoDB</b> to move data from an old schema to a new one ensuring compatibility.
-          <br />
-          <br />
-          <b>GraphQL Development:</b><br />
-          Worked with <b>AWS AppSync</b>, creating and updating resolvers.
-          <br />
-          <br />
-          <b>Code Quality and Refactoring:</b><br />
-          Performed extensive refactoring, enforcing <b>CLEAN code practices</b>.
-        `,
-        languages: 'react node'
+        <b>Cloud Integration:</b><br />
+        Utilized <b>Google Cloud Platform</b> and <b>Firebase</b> for deploying and managing serverless functions.
+        <br />
+        <br />
+        <b>Performance Optimization:</b><br />
+        Focused on optimizing application performance to ensure a smooth user experience.
+        <br />
+        <br />
+        <b>User Engagement:</b><br />
+        Implemented features and improvements aimed at increasing user engagement and satisfaction.
+`,
+        languages: "angular node",
       },
     ];
   }, []);
@@ -202,37 +241,45 @@ const About = () => {
     ];
   }, []);
 
-  const smoothScrollY = useSpring(useTransform(scrollY, (value) => {
-    const dampenedValue = value * 0.05
-    return clamp(dampenedValue, 0, 5);
-  }), {
-    stiffness: 50,
-    damping: 10,
-    mass: 0.1,
-  });
-  
-  const smoothScrollY2 = useSpring(useTransform(scrollY, (value) => value * 0.1), {
-    stiffness: 100,
-    damping: 30,
-    mass: 0.5,
-  });
+  const smoothScrollY = useSpring(
+    useTransform(scrollY, (value) => {
+      const dampenedValue = value * 0.05;
+      return clamp(dampenedValue, 0, 5);
+    }),
+    {
+      stiffness: 50,
+      damping: 10,
+      mass: 0.1,
+    }
+  );
+
+  const smoothScrollY2 = useSpring(
+    useTransform(scrollY, (value) => value * 0.1),
+    {
+      stiffness: 100,
+      damping: 30,
+      mass: 0.5,
+    }
+  );
   return (
     <>
       <motion.section ref={scrollRef} className="about-section">
-        <h1  className="overflow-hidden d-flex justify-content-center align-items-center">
+        <h1 className="overflow-hidden d-flex justify-content-center align-items-center">
           <span className="page-heading">ABOUT</span>
         </h1>
         <p className="page-text page-text-container">
           My name is Chipili, a dedicated and innovative Full Stack Software
           Engineer and Create developer with a solid foundation in Engineering.
-          My journey from engineering to software development has been fueled by
+          My journey as a software engineer has been fueled by
           a passion for solving complex problems and creating impactful digital
           solutions.
         </p>
         {/* <hr /> */}
         <div className="row mt-5 w-100">
           <div className="col-12 d-flex col-md-6 justify-content-center align-items-start">
-            <motion.h2 style={{ y: smoothScrollY }} class="section-heading">Experience</motion.h2>
+            <motion.h2 style={{ y: smoothScrollY }} class="section-heading">
+              Experience
+            </motion.h2>
           </div>
           <div className="col-12 col-md-6 d-flex flex-column align-items-center justify-content-center bullet-container">
             {experience.map((value, i) => {
@@ -242,14 +289,21 @@ const About = () => {
                   data-images={value.languages}
                   className={`row d-flex justify-content-center justify-content-md-start align-items-start experience`}
                 >
-                  <div 
-                  data-images={value.languages}
-                  className="col-2 experience">
-                    <motion.div style={{ y: smoothScrollY2 }} className="bullet parallax">
+                  <div
+                    data-images={value.languages}
+                    className="col-2 experience"
+                  >
+                    <motion.div
+                      style={{ y: smoothScrollY2 }}
+                      className="bullet parallax"
+                    >
                       {value.bullet}
                     </motion.div>
                   </div>
-                  <div className="col-10 experience" data-images={value.languages}>
+                  <div
+                    className="col-10 experience"
+                    data-images={value.languages}
+                  >
                     <h2
                       className="page-text d-flex align-items-center"
                       dangerouslySetInnerHTML={{ __html: value.company }}
@@ -268,7 +322,9 @@ const About = () => {
         {/* <hr /> */}
         <div className="row mt-5">
           <div className="col-12 d-flex col-md-6 justify-content-center">
-            <motion.h2 style={{ y: smoothScrollY }} class="section-heading">Education</motion.h2>
+            <motion.h2 style={{ y: smoothScrollY }} class="section-heading">
+              Education
+            </motion.h2>
           </div>
           <div className="col-12 col-md-6 d-flex flex-column justify-content-center">
             <h2 className="page-text small">
@@ -289,7 +345,9 @@ const About = () => {
         <hr />
         <div className="row mt-5">
           <div className="col-12 d-flex col-md-6 justify-content-center">
-            <motion.h2 style={{ y: smoothScrollY }} class="section-heading">Skills</motion.h2>
+            <motion.h2 style={{ y: smoothScrollY }} class="section-heading">
+              Skills
+            </motion.h2>
           </div>
           <div className="col-12 col-md-6 d-flex flex-row align-items-center justify-content-start">
             <div className="row">
@@ -304,19 +362,7 @@ const About = () => {
                   >
                     <div className="row w-100">
                       <div className="col d-flex align-items-center">
-                        <progress
-                          className={`progress-bar ${
-                            skill.progress <= 30
-                              ? "bad"
-                              : skill.progress <= 70
-                              ? "ok"
-                              : "good"
-                          }`}
-                          id="frontend-development"
-                          value={`${skill.progress}`}
-                          max="100"
-                          color="#ff0000"
-                        ></progress>
+                        <ProgressBar skill={skill} index={i} />
                       </div>
                       <div className="col">
                         <label

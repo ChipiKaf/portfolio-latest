@@ -10,9 +10,9 @@ const Interface = () => {
         d-flex
         justify-content-center
         align-items-center
-        col-md-6
-        justify-content-md-start
-        align-items-md-start
+        col-lg-6
+        justify-content-lg-start
+        align-items-lg-start
         "
         >
           <div className="left-content">
@@ -33,9 +33,9 @@ const Interface = () => {
         right-section 
         justify-content-center
         align-items-end
-        justify-content-md-end
-        align-items-md-end
-        col-md-6
+        justify-content-lg-end
+        align-items-lg-end
+        col-lg-6
         d-flex
         col-12
         "

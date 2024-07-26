@@ -1,0 +1,18 @@
+.progress-bar {
+    height: 1rem;
+    border-radius: 1rem;
+    width: 90%;
+
+    /* For Chrome, Safari, and Opera */
+    &.good {
+            background-color: #4caf50; /* Green color */
+    }
+
+    &.ok {
+            background-color: #fce703;
+    }
+
+    &.bad {
+     background-color: #fc0303; /* Green color */
+    }
+}

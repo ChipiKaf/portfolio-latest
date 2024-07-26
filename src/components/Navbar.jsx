@@ -76,15 +76,9 @@ const Navbar = () => {
         },
       },
       {
-        title: "Work",
-        onClick: () => {
-          navigate("/about");
-        },
-      },
-      {
         title: "Contact",
         onClick: () => {
-          navigate("/about");
+          navigate("/contact");
         },
       },
     ],

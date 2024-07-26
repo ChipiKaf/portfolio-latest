@@ -1,0 +1,111 @@
+@import "../themes/typography";
+@import "../themes/colors";
+@import "../abstracts/mixins";
+
+a:link,
+a:visited {
+    text-decoration: none;
+    color: darken($tertiary-color, 50)
+}
+.contact-section {
+    overflow: auto;
+    height: calc(100vh - 16rem);
+
+    @include respond(big-desktop) {
+        padding: 0 10rem;
+    }
+
+    @include respond(tab-port) {
+        padding: 0 1rem;
+    }
+
+    @include respond(tab-land) {
+        padding: 0 2rem;
+    }
+
+    @include respond(phone) {
+        padding: 0 2rem;
+    }
+
+    .emoji {
+        width: auto;
+        height: 3rem;
+    }
+
+    .gap-20 {
+        gap: 1rem;
+    }
+
+    & .email {
+        display: inline-block;
+        font-size: 5rem;
+        font-family: $paragraph-font;
+        padding: .5rem 2rem;
+        color: darken($tertiary-color, 2);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(1,-0.03,.63,.05);
+        &::before,
+        &::after {
+            content: "";
+            background-color: darken($tertiary-color, 20);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            transition: transform 1s cubic-bezier(1,-0.03,.63,.05);
+        }
+        
+        &::after {
+            transition-delay: .4s !important;
+            transform: translateX(-101%);
+        }
+    
+        &::before {
+            transform: translateX(0%);
+        }
+    
+        &:hover::before {
+            transform: translateX(101%);
+        }
+    
+        &:hover::after {
+            transform: translateX(0);
+        }
+
+
+    }
+
+    & .socials {
+        & .icon-image {
+            width: 3rem;
+            height: auto;
+        }
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 2rem;
+
+    }
+}
+.height {
+    min-height: 20rem;
+}
+p.progress-label {
+    margin-bottom: .4rem;
+    display: inline-block;
+    &:not(:last-child) {
+        margin-right: 1rem
+    }
+}
+
+.experience {
+    &:hover {
+        cursor: none;
+    }
+}
+
+.progress-label {
+    font-size: 2rem;
+}

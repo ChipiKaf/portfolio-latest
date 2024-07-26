@@ -26,75 +26,6 @@
         height: 3rem;
     }
 
-    & .progress-bar {
-        height: 1rem;
-        border-radius: 1rem;
-        width: 90%;
-        background-color: red;
-
-        /* For Chrome, Safari, and Opera */
-        &.good {
-            &::-webkit-progress-bar {
-                background-color: #eee;
-            }
-            &::-webkit-progress-value {
-                background-color: #4caf50; /* Green color */
-            }
-
-            /* For Firefox */
-            &::-moz-progress-bar {
-                background-color: #4caf50; /* Green color */
-            }
-
-            /* For Internet Explorer */
-            &::-ms-fill {
-                background-color: #4caf50; /* Green color */
-            }
-        }
-
-        &.ok {
-            &::-webkit-progress-bar {
-                background-color: #eee;
-            }
-            &::-webkit-progress-value {
-                background-color: #fce703; /* Green color */
-            }
-
-            /* For Firefox */
-            &::-moz-progress-bar {
-                background-color: #fce703; /* Green color */
-            }
-
-            /* For Internet Explorer */
-            &::-ms-fill {
-                background-color: #fce703; /* Green color */
-            }
-        }
-
-        &.bad {
-            &::-webkit-progress-bar {
-                background-color: #eee;
-            }
-            &::-webkit-progress-value {
-                background-color: #fc0303; /* Green color */
-            }
-
-            /* For Firefox */
-            &::-moz-progress-bar {
-                background-color: #fc0303; /* Green color */
-            }
-
-            /* For Internet Explorer */
-            &::-ms-fill {
-                background-color: #fc0303; /* Green color */
-            }
-        }
-    }
-
-    & .progress-label {
-        font-size: 2rem;
-    }
-
     .gap-20 {
         gap: 1rem;
     }
@@ -114,4 +45,8 @@ p.progress-label {
     &:hover {
         cursor: none;
     }
+}
+
+.progress-label {
+    font-size: 2rem;
 }

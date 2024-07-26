@@ -51,11 +51,10 @@ const Cursor = () => {
        */
       const currentElement = e.target;
       const element = findAncestorWithClass(currentElement, "experience");
-
       if (element) {
         setShowIcon(true);
         // cursorOutline.current.classList.remove("empty")
-        const images = element.getAttribute("data-images").split(" ");
+        let images = element.getAttribute("data-images").split(" ");
         if (images[currentIndex.current] !== "")
           cursorOutline.current.style.backgroundImage = `url('/${
             images[currentIndex.current]
@@ -64,6 +63,7 @@ const Cursor = () => {
         if (images.length > 1 && interval.current === null) {
           setNoImages(false);
           interval.current = setInterval(() => {
+            images = element.getAttribute("data-images").split(" ");
             const index = Math.floor(Math.random() * images.length);
 
             if (currentIndex.current !== index) {
@@ -93,8 +93,8 @@ const Cursor = () => {
         }
       }
     };
-    document.addEventListener("mouseover", mouseEventListener);
-    return () => document.removeEventListener("mouseover", mouseEventListener);
+    document.addEventListener("mouseenter", mouseEventListener, true);
+    return () => document.removeEventListener("mouseenter", mouseEventListener);
   }, []);
 
   return (

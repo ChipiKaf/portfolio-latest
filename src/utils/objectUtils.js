@@ -27,9 +27,10 @@ export const createControlConfig = (uniforms, exclude = []) => {
 export function findAncestorWithClass(element, className) {
     let currentElement = element;
     while (currentElement !== null) {
-      if (currentElement.classList.contains(className)) {
+      if (currentElement.classList?.contains(className)) {
         return currentElement;
       }
+      if (!currentElement.parentElement) return null
       currentElement = currentElement.parentElement;
     }
     return null;
